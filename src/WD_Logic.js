@@ -1,4 +1,5 @@
 
+
 const APIKey = import.meta.env.VITE_WEATHER_API_KEY;
 console.log(APIKey);
 const SearchInput = document.getElementById("SearchIn");
