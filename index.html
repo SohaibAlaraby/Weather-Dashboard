@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <!-- Include font awesome icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <!-- Include Google roboto fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- Include Google Icons-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- Include css styling -->
+    <link rel="stylesheet" href="src/WD_Style.css">
+</head>
+<body>
+    <div id="loader">
+        <div id ="spinner" class="spinner"></div> 
+        <button id="TryAgain" class="TryAgain hidden"><span class="material-symbols-outlined">refresh</span>Try Again</button>
+    </div>
+    <div id="WeatherAppContainer" class="WeatherAppContainer hideWeatherAppContainer">
+        <header id="WeatherAppHeader" class="WeatherAppHeader">
+            <div id = "City-Country-Date-Time">
+                <p id="City">Anonymous City</p> 
+                <p id="Country">Anonymous Country</p>
+                <p id = "Date-Time"><span id="Date">No Date</span> | <span id="Time">No Time</span></p>
+            </div>
+            <div id="SearchIn-SearchBtn-LocationBtn">
+                <div id="SearchIn-SearchBtn" class="SearchIn-SearchBtn">
+                    <input type="search" id="SearchIn" placeholder="Enter city name">
+                    <button id="SearchBtn">search</button>
+                </div>
+                <button id="LocationBtn"><span class="material-symbols-outlined">location_on</span></button>
+            </div>
+        </header>
+
+        <main id="WeatherAppMain" class="WeatherAppMain">
+            <section id="MainInfo">
+                <div id="Temp-Units-WeatherCondition">
+                    <p id="Temp">--</p>
+                    <div id="Units-WeatherCondition">
+                        <div id="Units">
+                            <button id="CelciusBtn">&deg;C</button>
+                            <span> | </span>
+                            <button id="FahrenheitBtn" class="deactive-unit">&deg;F</button>
+                        </div>
+                        
+                        <p id="WeatherCondition">Unknown</p>
+                    </div>
+                    
+
+                </div>
+                <div id="WeatherIcon-ExtraWeatherInfo">
+                    <img src="" alt="Weather State Icon" id="WeatherIcon">
+                    <div id="ExtraWeatherInfo">
+                        <p id="FeelsLike"><span class="material-symbols-outlined">device_thermostat</span> Feels like: <span id="FeelsLikeTemp">--&deg;C</span>
+                        </p>
+                        <p id="MaxMinTemp" class="centerVertically"><span class="material-symbols-outlined">north</span><span id="MaxTemp">--</span>&deg; <span class="material-symbols-outlined">south</span><span id="MinTemp">--</span>&deg;</p>
+
+                        <p id="Humidity"><span class="material-symbols-outlined">humidity_high</span> Humidity: <span id="HumidityPercent">--</span>%
+                        </p>
+
+                        <p id="Wind" class="centerVertically"><span class="material-symbols-outlined">air</span> Wind: <span id="WindSpeed">-- km/h</span>
+                        , <span id = "windDirection">--</span></p>
+
+                    </div>
+                </div>
+            </section>
+            <section id="TodayDetailedInfoContainer">
+                <h3>today</h3>
+                <section id="TodayDetailedInfo"></section>
+            </section>
+            <section id="NextDaysPredictionContainer">
+                <h3>daily forcast</h3>
+                <section id="NextDaysPrediction"></section>
+            </section>
+            <section id="AQISection">
+                <h3><span class="material-symbols-outlined">airwave</span>Air Quality</h3>
+                <div>
+                    <p id="AQIState"></p>
+                    <!-- <p id="AQIDescription"></p> -->
+                    <div id="AQIBar1">
+                        <div id="AQIBar2"></div>
+                    </div>
+                    <section id = "AQIDetailsSec">
+                        <button id="AQIDetailsbtn"><span class="material-symbols-outlined">chevron_right</span> details</button>
+                        <div>
+
+                        </div>
+                    </section>
+                    
+                </div>
+            </section>
+            <section id="UVIndex">
+                <h3><span class="material-symbols-outlined">wb_sunny</span>UV index</h3>
+                <div>
+                    <p id="UVIndexDescribtion">low</p>
+                    <div id="UVBar">
+                        <div id="UVPointer">0</div>
+                    </div>
+                </div>
+            </section>
+            <section id="HumiditySection">
+                <h3><span class="material-symbols-outlined">humidity_high</span>Humidity</h3>
+                <div>
+                    <p id="HumidityDescription"></p>
+                    <div id="HumidityBar1">
+                        <div id="HumidityBar2"></div>
+                    </div>
+                </div>
+            </section>
+            <section id="VisibilitySection">
+                <h3><span class="material-symbols-outlined">visibility</span>Visibility</h3>
+                <p id="VisibilityDescription"></p>
+                <p id="VisibilityValue"></p>
+            </section>
+            <section id="DewPointSection">
+                <h3><span class="material-symbols-outlined">dew_point</span>Dew Point</h3>
+                <p id="DewPointDescription"></p>
+                <p id="DewPointValue"></p>
+            </section>
+
+        </main>
+    </div>
+    <script type="module" src = "src/WD_Logic.js"></script>
+</body>
+</html>
