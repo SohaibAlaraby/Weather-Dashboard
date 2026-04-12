@@ -28,25 +28,25 @@ body {
 
 }
 .bg-sunny {
-    background-image: url(./assets/Images/Sunny.webp);
+    background-image: url(/Images/Sunny.webp);
 }
 .bg-clear {
-    background-image: url(./assets/Images/Clear.webp);
+    background-image: url(/Images/Clear.webp);
 }
 .bg-cloudy {
-    background-image: url(./assets/Images/Cloudy.webp);
+    background-image: url(/Images/Cloudy.webp);
 }
 .bg-mist {
-    background-image: url(./assets/Images/Fog_Mist.webp);
+    background-image: url(/Images/Fog_Mist.webp);
 }
 .bg-rainy {
-    background-image: url(./assets/Images/Rainy.webp);
+    background-image: url(/Images/Rainy.webp);
 }
 .bg-snowy {
-    background-image: url(./assets/Images/Snowy.webp);
+    background-image: url(/Images/Snowy.webp);
 }
 .bg-thunder {
-    background-image: url(./assets/Images/Thunder.webp);
+    background-image: url(/Images/Thunder.webp);
 }
 
 .errorMessage{

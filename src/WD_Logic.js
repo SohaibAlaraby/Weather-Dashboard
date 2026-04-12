@@ -1,5 +1,4 @@
 
-
 const APIKey = import.meta.env.VITE_WEATHER_API_KEY;
 console.log(APIKey);
 const SearchInput = document.getElementById("SearchIn");
@@ -140,7 +139,7 @@ function updateBackground({condition:{code}, is_day}) {
 
 function updateWeatherIcon({is_day, condition:{code,text:WeatherCondition}}) {
     const weatherIconUI = document.getElementById('WeatherIcon');
-    const baseURL = './src/assets/Icons/';
+    const baseURL = `${import.meta.env.BASE_URL}Icons/`;
     const groupName = getWeatherGroup(code);
     weatherIconUI.alt = WeatherCondition;
     if(groupName === 'sunny'){

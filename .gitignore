@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-src\assets\possible_codes.pdf
+src/assets/possible_codes.pdf
 .env
 .env.local
 # Editor directories and files
