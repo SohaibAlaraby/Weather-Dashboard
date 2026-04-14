@@ -1,6 +1,5 @@
 
 const APIKey = import.meta.env.VITE_WEATHER_API_KEY;
-console.log(APIKey);
 const SearchInput = document.getElementById("SearchIn");
 const SearchBtn = document.getElementById("SearchBtn");
 const CelBtn = document.getElementById('CelciusBtn');
@@ -260,7 +259,7 @@ function updateWeatherDataInUI(data){
         updateHumiditySection(data);
         updateVisibilitySection(data, true);
         updateDewPointSection(data, true);
-        updateAQISection(data);
+        updateAQIContainer(data);
     }catch(error) {
         console.error("UI update error:",error);
     }
@@ -429,24 +428,71 @@ function updateDewPointSection({current:{dewpoint_c,dewpoint_f}}, isCel){
     }
 }
 
-function getAQIDetails(index) {
+function getAQIState(index) {
     const AQI = {
-        1:{status:"good", color:"#00e100", general_advice:"great day for outdoor exercise!", sensitive_advice:"perfect air quality for everyone", icon:"🏃‍♂️‍➡️"},
-        2:{status:"moderate", color:"#ffff00", general_advice:"a good day to be outside", sensitive_advice:"limit prolonged outdoor exertion if you have asthma", icon:"🚶‍♂️‍➡️"},
-        3:{status:"unhealthy for sensitive groups", color:"#ff7e00", general_advice:"it's okay to be outside, but take breaks", sensitive_advice:"avoid outdoor activities. Stay indoors if possible", icon:"⚠️"},
-        4:{status:"unhealthy", color:"#ff0000", general_advice:"wear a mask if you're outside for long", sensitive_advice:"stay indoors with air purification on", icon:"😷"},
-        5:{status:"very unhealthy", color:"#8f3f97", general_advice:"avoid all outdoor physical activities", sensitive_advice:"strictly stay indoors. Dangerous for respiratory health.", icon:"🤢"},
-        6:{status:"hazardous", color:"#7e0023", general_advice:"dangerous for respiratory health", sensitive_advice:"dangerous for respiratory health", icon:"☠️"}
+        1:{status:"good"},
+        2:{status:"moderate"},
+        3:{status:"unhealthy for sensitive groups"},
+        4:{status:"unhealthy"},
+        5:{status:"very unhealthy"},
+        6:{status:"hazardous"}
     }
-    return AQI[index] || {status: "unknown", color:"#ccc", advice:"no data available!"};
+    return AQI[index] || {status: "unknown"};
 }
+function updateAQIContainer({current:{air_quality}}){
+    const {status} = getAQIState(air_quality["us-epa-index"]);
+    const {'us-epa-index':index} = air_quality;
 
-function updateAQISection({current:{air_quality}}){
-    const {status, color, general_advice, sensitive_advice, icon} = getAQIDetails(air_quality["us-epa-index"]);
-    const {co, no2, o3, pm2_5, pm10, so2, 'us-epa-index':index} = air_quality;
     const AQI_status = document.getElementById('AQIState'); 
-    const AQI_bar = document.getElementById('AQIBar2');
+    const AQI_bar = document.getElementById('AQIBarFill');
+
     AQI_status.textContent = status;
     AQI_bar.className = '';
     AQI_bar.classList.add(`AQIBar2_${index }`);
+
+    updateAQIDetails(air_quality)
 }
+
+function updateAQIDetails({co,no2,o3,pm2_5,pm10,so2}) {
+    const aqi_ids = ['PM10','PM25','CO','SO2','NO2','O3'];
+    const aqi_values = [pm10,pm2_5,co,so2,no2,o3];
+    const aqi_val_element = aqi_ids.map((i) => {
+        return document.getElementById(i).querySelector('.aqi-value')
+    });
+    
+    aqi_val_element.forEach((item,index) => {
+        item.textContent = aqi_values[index];
+    });   
+
+    const aqi_dot = aqi_ids.map((i) => {
+        return document.getElementById(i).querySelector('.dot')
+    });
+    aqi_dot.forEach((item, index) => {
+        updateAQIDetailsDotColor(item,aqi_ids[index],aqi_values[index]);
+
+    })
+
+}
+function updateAQIDetailsDotColor(item, type, value) {
+    item.className = 'dot'; 
+
+    const thresholds = {
+        'PM10': [54, 150],
+        'PM25': [12, 55],
+        'CO':   [4400, 9400],
+        'SO2':  [20, 200],
+        'NO2':  [40, 180],
+        'O3':   [100, 140]
+    };
+
+    const [greenLimit, orangeLimit] = thresholds[type];
+    if (value <= greenLimit) {
+        item.classList.add('dot--green');
+    } else if (value <= orangeLimit) {
+        item.classList.add('dot--orange');
+    } else {
+        item.classList.add('dot--darkred');
+    }
+}
+
+

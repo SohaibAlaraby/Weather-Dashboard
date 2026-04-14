@@ -79,23 +79,61 @@
                 <h3>daily forcast</h3>
                 <section id="NextDaysPrediction"></section>
             </section>
-            <section id="AQISection">
-                <h3><span class="material-symbols-outlined">airwave</span>Air Quality</h3>
-                <div>
-                    <p id="AQIState"></p>
-                    <!-- <p id="AQIDescription"></p> -->
-                    <div id="AQIBar1">
-                        <div id="AQIBar2"></div>
-                    </div>
-                    <section id = "AQIDetailsSec">
-                        <button id="AQIDetailsbtn"><span class="material-symbols-outlined">chevron_right</span> details</button>
-                        <div>
 
-                        </div>
-                    </section>
-                    
+            <section id="AQIContainer">
+                <header>
+                    <h3>
+                        <span class="material-symbols-outlined">airwave</span>
+                        AQI
+                    </h3>
+                </header>
+                <div id = "AQIContent">
+                    <p id="AQIState"></p>
+                    <div id="AQIBarContainer">
+                        <div id="AQIBarFill"></div>
+                    </div>
+                    <details>
+                        <summary>
+                            <span>details</span>
+                        </summary>
+                        <div class="aqi-grid">  
+                                <div class="aqi-item" id="PM10">
+                                    <span>PM10:</span>
+                                    <span class="aqi-value">12.5</span>
+                                    <span class="dot dot--green"></span> 
+                                </div>
+                                <div class="aqi-item" id="PM25">
+                                    <span>PM2.5:</span>
+                                    <span class="aqi-value">12.5</span>
+                                    <span class="dot dot--green"></span> 
+                                </div>
+
+                                <div class="aqi-item" id="CO">
+                                    <span>CO:</span>
+                                    <span class="aqi-value">12.5</span>
+                                    <span class="dot dot--green"></span>
+                                </div>
+                                <div class="aqi-item" id="SO2">
+                                    <span>SO<sub>2</sub>:</span>
+                                    <span class="aqi-value">12.5</span>
+                                    <span class="dot dot--green"></span>
+                                </div>
+                                <div class="aqi-item" id="NO2">
+                                    <span>NO<sub>2</sub>:</span>
+                                    <span class="aqi-value">12.5</span>
+                                    <span class="dot dot--green"></span>
+                                </div>
+                                
+                                <div class="aqi-item" id="O3">
+                                    <span>O<sub>3</sub>:</span>
+                                    <span class="aqi-value">12.5</span>
+                                    <span class="dot dot--orange"></span>
+                                </div>
+                            </div>
+                    </details>
                 </div>
             </section>
+            
             <section id="UVIndex">
                 <h3><span class="material-symbols-outlined">wb_sunny</span>UV index</h3>
                 <div>
