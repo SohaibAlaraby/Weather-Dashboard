@@ -24,8 +24,6 @@ body {
     background-repeat:no-repeat;
     transition: background-image 0.5s ease-in-out;
 
-
-
 }
 .bg-sunny {
     background-image: url(/Images/Sunny.webp);
@@ -105,10 +103,13 @@ body {
     backdrop-filter: blur(2px);
     color:white;
     min-height: 100vh;
+    width:100%;
+    max-width:1920px;
     display:flex;
     flex-direction: column;
     justify-content: center;
     gap: var(--WeatherAppContainer-gap);
+    
 }
 /* header */
 .WeatherAppHeader{
@@ -301,7 +302,7 @@ body {
     width: 55%;
 }
 
-#TodayDetailedInfoContainer h3, #NextDaysPredictionContainer h3, #UVIndex h3, #HumiditySection h3, #VisibilitySection h3, #DewPointSection h3{
+#TodayDetailedInfoContainer h3, #NextDaysPredictionContainer h3, #UVIndex h3, #HumiditySection h3, #VisibilitySection h3, #DewPointSection h3,#AQIContainer h3{
     text-transform: capitalize;
     font-weight: 400;
     margin-top:0;
@@ -336,7 +337,7 @@ body {
     width:30%;
     
 }
-#UVIndex, #HumiditySection, #VisibilitySection, #DewPointSection, #AQISection{
+#UVIndex, #HumiditySection, #VisibilitySection, #DewPointSection, #AQIContainer{
     background-color: rgba(0, 0, 0, 0.247);
     width:30%;
     min-width: 300px;
@@ -348,7 +349,7 @@ body {
     justify-content: space-between;
     
 }
-#UVIndex h3, #HumiditySection h3, #VisibilitySection h3,#DewPointSection h3, #AQISection h3{
+#UVIndex h3, #HumiditySection h3, #VisibilitySection h3,#DewPointSection h3, #AQIContainer h3{
     display:flex;
     align-items: center;
     gap: 4px;
@@ -369,7 +370,7 @@ body {
     margin:0;
     text-transform: capitalize;
 }
-#UVBar, #HumidityBar1, #AQIBar1{
+#UVBar, #HumidityBar1, #AQIBarContainer{
     width:100%;
     height: 20px;
     border-radius: 16px;
@@ -384,10 +385,10 @@ body {
         #6b49c8 100%   /* Extreme */);
     position:relative;
 }
-#HumidityBar1, #AQIBar1 {
+#HumidityBar1, #AQIBarContainer {
     background-color: white;
 }
-#HumidityBar2, #AQIBar2{
+#HumidityBar2, #AQIBarFill{
     height: 20px;
     border-radius: 16px;
     
@@ -419,6 +420,10 @@ body {
     background-color:#7e0023;
     width:100%;
 }
+.AQIBar2_unknown {
+    background-color:#5f5f5f;
+    width:5%;
+}
 #UVPointer{
     width:36px;
     height:36px;
@@ -433,4 +438,51 @@ body {
     justify-content: center;
     align-items: center;
 }
+#AQIContainer details{
+    
+    padding: 8px;
+    border-radius: 8px;
+    color:white;
+    margin-top: 16px;
+}
 
+#AQIContainer details summary{
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+    text-transform:capitalize;
+    margin-bottom:8px;
+}
+.aqi-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
+    gap: 12px; 
+    margin-top: 10px;
+}
+.aqi-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    background-color: #0e548d;
+    padding: 8px;
+    border-radius: 8px;
+    gap:8px;
+
+}
+.dot{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display:inline-block;
+    flex-shrink: 0;
+}
+.dot--green{
+    background-color: #00e100;
+}
+.dot--orange{
+    background-color: #ff7e00;
+}
+.dot--darkred{
+    background-color: #7e0023;
+}
