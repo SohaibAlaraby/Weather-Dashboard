@@ -261,6 +261,7 @@ function updateWeatherDataInUI(data){
         updateDewPointSection(data, true);
         updateAQIContainer(data);
         updateMoonContainer(data.forecast);
+        updateSunContainer(data.forecast);
     }catch(error) {
         console.error("UI update error:",error);
     }
@@ -519,4 +520,12 @@ function updateMoonPhaseImg(moon_phase){
     MoonImage.src = `Icons/${Phases[moon_phase]}`;
     MoonImage.alt = moon_phase;
 }
+function updateSunContainer({forecastday:[{astro:{ sunrise, sunset}}]}){
+    const Sun_ids = ['SunriseTime','SunsetTime'];
+    const Sun_vals = [sunrise,sunset];
+    Sun_ids.forEach((id, index) => {
+        document.getElementById(id).textContent = Sun_vals[index];
+    });
+}
+
 
