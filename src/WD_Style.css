@@ -491,10 +491,10 @@ body {
 }
 #MoonContainer {
     background-color: rgba(0, 0, 0, 0.247);
-    width:50%;
+    width:30%;
     min-width: 300px;
     max-width: calc(1920px/2);
-    padding:36px 18px;
+    padding:18px;
     border-radius: 16px;
     flex-grow:1;
     display: inline-flex;
@@ -509,7 +509,7 @@ body {
 }
 #MoonVisualize{
     gap:12px;
-    width:50%;
+    width:30%;
 }
 #MoonContent{
     justify-content: center;
@@ -522,10 +522,10 @@ body {
     max-width:260px;
 }
 .subtitle{
-    font-size: 16px;
+    font-size: 1em;
     font-weight: 400;
 }
 .MoonTime{
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 1.25em;
+    font-weight: 500px;
 }

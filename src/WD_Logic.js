@@ -260,6 +260,7 @@ function updateWeatherDataInUI(data){
         updateVisibilitySection(data, true);
         updateDewPointSection(data, true);
         updateAQIContainer(data);
+        updateMoonContainer(data.forecast);
     }catch(error) {
         console.error("UI update error:",error);
     }
@@ -504,5 +505,28 @@ function updateAQIDetailsDotColor(item, type, value) {
     Last Quarter
     Waning Crescent
 */
+function updateMoonContainer({forecastday:[{astro:{moon_phase, moonrise, moonset}}]}){
+    const Moon_ids = ['MoonPhase', 'MoonriseTime','MoonsetTime'];
+    const Moon_vals = [moon_phase,moonrise,moonset];
+    Moon_ids.forEach((id, index) => {
+        document.getElementById(id).textContent = Moon_vals[index];
+    });
+    updateMoonPhaseImg(moon_phase)
+}
+function updateMoonPhaseImg(moon_phase){
+    const Phases ={
+        "New Moon" : "NewMoon.png",
+       "Waxing Crescent" : "WaxingCrescent.png",
+        "First Quarter" : "FirstQuarter.png",
+        "Waxing Gibbous" : "WaxingGibbous.png",
+        "Full Moon" : "Full.png",
+        "Waning Gibbous" : "WaningGibbous.png",
+        "Last Quarter" : "LastQuarter.png",
+        "Waning Crescent" : "WaningCrescent.png"
+    }
 
+    const MoonImage =  document.getElementById('MoonImage');
+    MoonImage.src = `Icons/${Phases[moon_phase]}`;
+    MoonImage.alt = moon_phase;
+}
 
