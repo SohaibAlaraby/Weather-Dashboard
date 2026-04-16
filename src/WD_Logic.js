@@ -495,16 +495,6 @@ function updateAQIDetailsDotColor(item, type, value) {
         item.classList.add('dot--darkred');
     }
 }
-/*
-    New Moon
-    Waxing Crescent
-    First Quarter
-    Waxing Gibbous
-    Full Moon
-    Waning Gibbous
-    Last Quarter
-    Waning Crescent
-*/
 function updateMoonContainer({forecastday:[{astro:{moon_phase, moonrise, moonset}}]}){
     const Moon_ids = ['MoonPhase', 'MoonriseTime','MoonsetTime'];
     const Moon_vals = [moon_phase,moonrise,moonset];
