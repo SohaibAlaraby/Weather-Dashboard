@@ -494,5 +494,15 @@ function updateAQIDetailsDotColor(item, type, value) {
         item.classList.add('dot--darkred');
     }
 }
+/*
+    New Moon
+    Waxing Crescent
+    First Quarter
+    Waxing Gibbous
+    Full Moon
+    Waning Gibbous
+    Last Quarter
+    Waning Crescent
+*/
 
 
