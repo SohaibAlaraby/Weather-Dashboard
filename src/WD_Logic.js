@@ -50,7 +50,7 @@ async function loadInitialData(event){
         let i = 0;
         while(true){
             try{
-                data = await loadWeatherData('Alexandria');
+                data = await fetchWeatherData('Alexandria');
             }catch{
                 await delay(500);
             }
@@ -183,7 +183,10 @@ function updateDateAndTime({localtime:time}) {
     setDate(DateObj);
     setTime(DateObj);
 }
-
+function updateAppHeader({location}){
+    updateCityAndCountryNames(location);
+    updateDateAndTime(location);
+}
 function setWeatherState(WeatherState){
     const WeatherStateUI = document.getElementById('WeatherCondition');
     WeatherStateUI.textContent = WeatherState;
@@ -245,7 +248,7 @@ function updateExtraWeatherInfo({current:{feelslike_c,feelslike_f,wind_kph,wind_
 }
 //refactor done end
 
-async function loadWeatherData(cityName){
+async function fetchWeatherData(cityName){
     try{
         /*
         if user fetch multiple times abort all previous fetches
@@ -269,15 +272,17 @@ async function loadWeatherData(cityName){
             throw error;
         }
     }
-    
-
 }
-function updateWeatherDataInUI(data){
-
-    try{
-        changeTempUnit(data,true)
-        updateCityAndCountryNames(data.location);
-        updateDateAndTime(data.location);
+function updateMainInfoSection(data,isCel){
+    updateTempAndWeatherCondition(data.current,isCel);
+    updateExtraWeatherInfo(data, isCel);
+    updateWeatherIcon(data.current);
+}
+function updateDetailedDataSections(data,isCel) {
+        createHourlyBar(data.forecast,isCel);
+        createDaysBar(data.forecast, isCel);
+        updateVisibilitySection(data, isCel);
+        updateDewPointSection(data, isCel);
         updateWeatherIcon(data.current);
         updateBackground(data.current);
         updateUVIndex(data);
@@ -285,6 +290,14 @@ function updateWeatherDataInUI(data){
         updateAQISection(data);
         updateMoonSection(data.forecast);
         updateSunSection(data.forecast);
+}
+function updateWeatherDataInUI(data){
+
+    try{
+        updateAppHeader(data);
+        updateMainInfoSection(data,true);
+        updateDetailedDataSections(data,true);
+        
     }catch(error) {
         console.error("UI update error:",error);
     }
@@ -301,7 +314,7 @@ async function searchBtnPressed(event) {
     deleteWarningMessage();
     let data;
     try{
-        data = await loadWeatherData(SearchInputContent);
+        data = await fetchWeatherData(SearchInputContent);
         if(data){
         WeatherData = data;
         console.log(WeatherData);
@@ -353,7 +366,7 @@ function createHourlyBar({forecastday:[{hour:hourArr}]},isCel){
         return `
         <div class="HourByHourInfo" data-hour-index=${index} >
             <span>${Time}</span>
-            <img src="https://${hour.condition.icon}" alt="${hour.condition.text}">
+            <img src="https://${hour.condition.icon}" alt="${hour.condition.text}" title="${hour.condition.text}">
             <span>${isCel?hour.temp_c:hour.temp_f}°</span>
             <span class="centerVertically"><span class="material-symbols-outlined">humidity_high</span> ${hour.humidity}%</span>
         </div>
@@ -373,7 +386,7 @@ function createDaysBar({forecastday}, isCel) {
         return `
         <div class="DayByDayInfo" data-day-index =${index} >
             <span>${dayName}</span>
-            <img src="https://${day.day.condition.icon}" alt="${day.day.condition.text}">
+            <img src="https://${day.day.condition.icon}" alt="${day.day.condition.text}" title="${day.day.condition.text}">
             <span class="centerVertically"><span class="material-symbols-outlined">north</span> ${maxtemp}° <span class="material-symbols-outlined">south</span> ${mintemp}°</span>
             <span class="centerVertically"><span class="material-symbols-outlined">humidity_high</span> ${humidity}%</span>
         </div>
