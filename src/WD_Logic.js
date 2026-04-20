@@ -1,10 +1,12 @@
 
 const APIKey = import.meta.env.VITE_WEATHER_API_KEY;
+
 const SearchInput = document.getElementById("SearchIn");
 const SearchBtn = document.getElementById("SearchBtn");
 const CelBtn = document.getElementById('CelciusBtn');
 const FahBtn = document.getElementById('FahrenheitBtn');
 const SearchBarContainer = document.getElementById("SearchIn-SearchBtn");
+
 const baseURL = "https://api.weatherapi.com/v1/forecast.json?"
 let WeatherData;
 let searchController;
@@ -17,32 +19,27 @@ class WeatherError extends Error {
 const TryAgainbtn = document.getElementById('TryAgain');
 window.addEventListener('load', loadInitialData);
 TryAgainbtn.addEventListener('click',loadInitialData);
-SearchBtn.addEventListener("click",searchBtnPressed);
-CelBtn.addEventListener("click",(event)=>{
-    updateTempAndWeatherCondition(WeatherData.current,true);
-    updateExtraWeatherInfo(WeatherData, true);
-    createHourlyBar(WeatherData.forecast,true);
-    createDaysBar(WeatherData.forecast, true);
-    updateVisibilitySection(WeatherData, true);
-    updateDewPointSection(WeatherData, true);
-});
-FahBtn.addEventListener("click",(event)=>{
-    updateTempAndWeatherCondition(WeatherData.current,false);
-    updateExtraWeatherInfo(WeatherData, false);
-    createHourlyBar(WeatherData.forecast,false);
-    createDaysBar(WeatherData.forecast, false);
-    updateVisibilitySection(WeatherData, false);
-    updateDewPointSection(WeatherData, false);
-});
-SearchInput.addEventListener("input",handleInput);
 
+SearchBtn.addEventListener("click",searchBtnPressed);
+CelBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,true); });
+FahBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,false); });
+
+SearchInput.addEventListener("input",handleInput);
+function changeTempUnit(data,isCel) {
+    updateTempAndWeatherCondition(data.current,isCel);
+    updateExtraWeatherInfo(data, isCel);
+    createHourlyBar(data.forecast,isCel);
+    createDaysBar(data.forecast, isCel);
+    updateVisibilitySection(data, isCel);
+    updateDewPointSection(data, isCel);
+}
 async function loadInitialData(event){
     const WeatherContainer = document.getElementById("WeatherAppContainer");
     const loader = document.getElementById('loader');
     const spinner = document.getElementById('spinner');
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve,ms));
-    spinner.classList.remove("hidden");
     TryAgainbtn.classList.add("hidden");
+    spinner.classList.remove("hidden");
     let previousMessage = loader.querySelector('p');
     if(previousMessage){
         previousMessage.remove();
@@ -53,7 +50,7 @@ async function loadInitialData(event){
         let i = 0;
         while(true){
             try{
-                data = await loadWeatherData('Alexandria');
+                data = await fetchWeatherData('Alexandria');
             }catch{
                 await delay(500);
             }
@@ -150,74 +147,108 @@ function updateWeatherIcon({is_day, condition:{code,text:WeatherCondition}}) {
     }
 
 }
-function updateCityAndCountryNames({name:city, country}) {
+//refactor done start
+function setCityName(city) {
     const cityUI = document.getElementById("City");
     cityUI.textContent = city;
+}
+function setCountryName(country) {
     const countryUI = document.getElementById("Country");
     countryUI.textContent = country;
 }
-function updateDateAndTime({localtime:time}) {
+function updateCityAndCountryNames({name:city, country}) {
+    setCityName(city);
+    setCountryName(country);
+}
+function setDate(date){
+    const DateUI = document.getElementById('Date');
+
     const Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const Days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const DayName = Days[date.getDay()];
+    const MonthName = Months[date.getMonth()];
+    DateUI.textContent = `${DayName}, ${date.getDate()} ${MonthName} ${date.getFullYear()}`;
 
-    const DateTimeUI = document.getElementById('Date-Time');
-    const localtime = new Date(time);
-
-    const DateUI = DateTimeUI.querySelector('#Date');
-    const day = Days[localtime.getDay()];
-    const month = Months[localtime.getMonth()]; 
-    DateUI.textContent = `${day}, ${localtime.getDate()} ${month} ${localtime.getFullYear()}`;
-    const TimeUI = DateTimeUI.querySelector('#Time');
-    TimeUI.textContent = localtime.toLocaleTimeString('en-US',{
+}
+function setTime(time){
+    const TimeUI = document.getElementById('Time');
+    TimeUI.textContent = time.toLocaleTimeString('en-US',{
         hour12:true,
         hour:"2-digit",
         minute:"2-digit"
     }); 
 }
-function updateTempAndWeatherCondition({temp_c, temp_f,condition:{text:WeatherText}},isCel) {
-    const TempWeatherConditionContainer = document.getElementById('Temp-Units-WeatherCondition');
-    const TempUI = TempWeatherConditionContainer.querySelector('#Temp');
-    const WeatherUI = TempWeatherConditionContainer.querySelector('#WeatherCondition');
-    const FahBtnUI = TempWeatherConditionContainer.querySelector('#FahrenheitBtn');
-    const CelBtnUI = TempWeatherConditionContainer.querySelector('#CelciusBtn');
+function updateDateAndTime({localtime:time}) {
+    const DateObj = new Date(time);
+    setDate(DateObj);
+    setTime(DateObj);
+}
+function updateAppHeader({location}){
+    updateCityAndCountryNames(location);
+    updateDateAndTime(location);
+}
+function setWeatherState(WeatherState){
+    const WeatherStateUI = document.getElementById('WeatherCondition');
+    WeatherStateUI.textContent = WeatherState;
+}
+function setMainTemp(temp_c,temp_f,isCel){
+    const TempUI = document.getElementById('Temp');
+    TempUI.textContent = isCel? temp_c : temp_f;
+}
+function setTempBtn(isCel) {
+    const FahBtnUI = document.getElementById('FahrenheitBtn');
+    const CelBtnUI = document.getElementById('CelciusBtn');
     if(!isCel) {
-        TempUI.textContent = temp_f;
         FahBtnUI.classList.remove('deactive-unit');
         CelBtnUI.classList.add('deactive-unit');
         
     } else {
-        TempUI.textContent = temp_c;
         FahBtnUI.classList.add('deactive-unit');
         CelBtnUI.classList.remove('deactive-unit');
     }
-    WeatherUI.textContent = WeatherText; 
 }
-function updateExtraWeatherInfo({current:{feelslike_c,feelslike_f,wind_kph,wind_mph,humidity,wind_dir}, forecast:{forecastday:[{day:{maxtemp_c,mintemp_c,maxtemp_f,mintemp_f}}]}},isCel) {
+function updateTempAndWeatherCondition({temp_c, temp_f,condition:{text:WeatherText}},isCel) {
+    setTempBtn(isCel);
+    setMainTemp(temp_c,temp_f,isCel);
+    setWeatherState(WeatherText);
+}
+
+
+function setFeelsLike(feelslike_c,feelslike_f,isCel) {
     const feelsLikeUI = document.getElementById('FeelsLikeTemp');
+    feelsLikeUI.textContent = isCel? `${feelslike_c}°C`:`${feelslike_f}°F`;
+}
+function setMinMaxTemp(TempObj,isCel) {
     const maxTempUI = document.getElementById('MaxTemp');
     const minTempUI = document.getElementById('MinTemp');
-    const humidityUI = document.getElementById('HumidityPercent');
+    if(isCel) {
+        maxTempUI.textContent = `${TempObj.maxtemp_c}°C`;
+        minTempUI.textContent = `${TempObj.mintemp_c}°C`;
+        return;
+    }
+    maxTempUI.textContent = `${TempObj.maxtemp_f}°F`;
+    minTempUI.textContent = `${TempObj.mintemp_f}°F`;
+}
+function setWind(wind_kph,wind_mph,wind_dir,isSIUnits){
     const windUI = document.getElementById('WindSpeed');
     const winddirUI = document.getElementById('windDirection');
-    if(!isCel){
-        feelsLikeUI.textContent = `${feelslike_f}°F`;
-        maxTempUI.textContent = maxtemp_f;
-        minTempUI.textContent = mintemp_f;
-        windUI.textContent = `${wind_mph} Mile/h`;
-        
-    } else {
-        feelsLikeUI.textContent = `${feelslike_c}°C`;
-        maxTempUI.textContent = maxtemp_c;
-        minTempUI.textContent = mintemp_c;
-        windUI.textContent = `${wind_kph} Km/h`;
-    }
-    humidityUI.textContent = humidity;
-    
+    windUI.textContent = isSIUnits?`${wind_kph} Km/h`:`${wind_mph} Mile/h`;
     winddirUI.textContent = wind_dir;
-
 }
+function setHumidity(humidity){
+    const humidityUI = document.getElementById('HumidityPercent');
+    humidityUI.textContent = humidity;
+}
+function updateExtraWeatherInfo({current:{feelslike_c,feelslike_f,wind_kph,wind_mph,humidity,wind_dir}, forecast:{forecastday:[{day:{maxtemp_c,mintemp_c,maxtemp_f,mintemp_f}}]}},isCel) {
+    setFeelsLike(feelslike_c,feelslike_f,isCel);
+    setMinMaxTemp({maxtemp_c,mintemp_c,maxtemp_f,mintemp_f},isCel);
+    setHumidity(humidity);
+    setWind(wind_kph,wind_mph,wind_dir,isCel);
+    
+}
+//refactor done end
 
-async function loadWeatherData(cityName){
+async function fetchWeatherData(cityName){
     try{
         /*
         if user fetch multiple times abort all previous fetches
@@ -241,32 +272,38 @@ async function loadWeatherData(cityName){
             throw error;
         }
     }
-    
-
+}
+function updateMainInfoSection(data,isCel){
+    updateTempAndWeatherCondition(data.current,isCel);
+    updateExtraWeatherInfo(data, isCel);
+    updateWeatherIcon(data.current);
+}
+function updateDetailedDataSections(data,isCel) {
+        createHourlyBar(data.forecast,isCel);
+        createDaysBar(data.forecast, isCel);
+        updateVisibilitySection(data, isCel);
+        updateDewPointSection(data, isCel);
+        updateWeatherIcon(data.current);
+        updateBackground(data.current);
+        updateUVIndex(data);
+        updateHumiditySection(data);
+        updateAQISection(data);
+        updateMoonSection(data.forecast);
+        updateSunSection(data.forecast);
 }
 function updateWeatherDataInUI(data){
 
     try{
-        updateCityAndCountryNames(data.location);
-        updateDateAndTime(data.location);
-        updateTempAndWeatherCondition(data.current, true);
-        updateExtraWeatherInfo(data, true);
-        updateWeatherIcon(data.current);
-        updateBackground(data.current);
-        createHourlyBar(data.forecast,true);
-        createDaysBar(data.forecast, true);
-        updateUVIndex(data);
-        updateHumiditySection(data);
-        updateVisibilitySection(data, true);
-        updateDewPointSection(data, true);
-        updateAQIContainer(data);
-        updateMoonContainer(data.forecast);
-        updateSunContainer(data.forecast);
+        updateAppHeader(data);
+        updateMainInfoSection(data,true);
+        updateDetailedDataSections(data,true);
+        
     }catch(error) {
         console.error("UI update error:",error);
     }
 }
 async function searchBtnPressed(event) {
+
     event.preventDefault();
     let SearchInputContent = SearchInput.value.trim(); //trim all spaces from start and end
     let isValidContent = validateCityName(SearchInputContent);
@@ -277,7 +314,7 @@ async function searchBtnPressed(event) {
     deleteWarningMessage();
     let data;
     try{
-        data = await loadWeatherData(SearchInputContent);
+        data = await fetchWeatherData(SearchInputContent);
         if(data){
         WeatherData = data;
         console.log(WeatherData);
@@ -296,6 +333,7 @@ async function searchBtnPressed(event) {
     
 }
 function prepareNewRequest() {
+
     if(searchController) {
         searchController.abort()
     }
@@ -317,6 +355,7 @@ function prepareURL(city,baseURL){
     return `${baseURL}${params}`;
 }
 function createHourlyBar({forecastday:[{hour:hourArr}]},isCel){
+
     const HourlyBarContainer = document.getElementById("TodayDetailedInfo");
     HourlyBarContainer.innerHTML = hourArr.map((hour,index) => {
         let Time = new Date(hour.time).toLocaleTimeString('en-US',{
@@ -325,9 +364,9 @@ function createHourlyBar({forecastday:[{hour:hourArr}]},isCel){
     });
 
         return `
-        <div class="HourByHourInfo" data-hour-index =${index} >
+        <div class="HourByHourInfo" data-hour-index=${index} >
             <span>${Time}</span>
-            <img src="https://${hour.condition.icon}" alt="${hour.condition.text}">
+            <img src="https://${hour.condition.icon}" alt="${hour.condition.text}" title="${hour.condition.text}">
             <span>${isCel?hour.temp_c:hour.temp_f}°</span>
             <span class="centerVertically"><span class="material-symbols-outlined">humidity_high</span> ${hour.humidity}%</span>
         </div>
@@ -336,6 +375,7 @@ function createHourlyBar({forecastday:[{hour:hourArr}]},isCel){
 }
 
 function createDaysBar({forecastday}, isCel) {
+
     const DaysBarContainer = document.getElementById('NextDaysPrediction');
     const Days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     DaysBarContainer.innerHTML = forecastday.map((day,index) => {
@@ -346,7 +386,7 @@ function createDaysBar({forecastday}, isCel) {
         return `
         <div class="DayByDayInfo" data-day-index =${index} >
             <span>${dayName}</span>
-            <img src="https://${day.day.condition.icon}" alt="${day.day.condition.text}">
+            <img src="https://${day.day.condition.icon}" alt="${day.day.condition.text}" title="${day.day.condition.text}">
             <span class="centerVertically"><span class="material-symbols-outlined">north</span> ${maxtemp}° <span class="material-symbols-outlined">south</span> ${mintemp}°</span>
             <span class="centerVertically"><span class="material-symbols-outlined">humidity_high</span> ${humidity}%</span>
         </div>
@@ -356,7 +396,7 @@ function createDaysBar({forecastday}, isCel) {
 }
 
 function updateUVIndex({current:{uv:UVIndex}}){
-    //{current:{uv:UVIndex}}
+
     const UVdescription = document.getElementById("UVIndexDescribtion");
     const UVPointer = document.getElementById("UVPointer");
     UVPointer.textContent = UVIndex.toFixed(1);
@@ -386,6 +426,7 @@ function updateUVIndex({current:{uv:UVIndex}}){
 }
 
 function updateHumiditySection({current:{humidity}}){
+
     const HumidityValue = document.getElementById("HumidityDescription");
     const HumidityBar= document.getElementById("HumidityBar2");
     HumidityValue.textContent = `${humidity}%`;
@@ -441,7 +482,7 @@ function getAQIState(index) {
     }
     return AQI[index] || {status: "unknown"};
 }
-function updateAQIContainer({current:{air_quality}}){
+function updateAQISection({current:{air_quality}}){
     const {status} = getAQIState(air_quality["us-epa-index"]);
     const {'us-epa-index':index} = air_quality;
 
@@ -496,7 +537,7 @@ function updateAQIDetailsDotColor(item, type, value) {
         item.classList.add('dot--darkred');
     }
 }
-function updateMoonContainer({forecastday:[{astro:{moon_phase, moonrise, moonset}}]}){
+function updateMoonSection({forecastday:[{astro:{moon_phase, moonrise, moonset}}]}){
     const Moon_ids = ['MoonPhase', 'MoonriseTime','MoonsetTime'];
     const Moon_vals = [moon_phase,moonrise,moonset];
     Moon_ids.forEach((id, index) => {
@@ -520,7 +561,7 @@ function updateMoonPhaseImg(moon_phase){
     MoonImage.src = `Icons/${Phases[moon_phase]}`;
     MoonImage.alt = moon_phase;
 }
-function updateSunContainer({forecastday:[{astro:{ sunrise, sunset}}]}){
+function updateSunSection({forecastday:[{astro:{ sunrise, sunset}}]}){
     const Sun_ids = ['SunriseTime','SunsetTime'];
     const Sun_vals = [sunrise,sunset];
     Sun_ids.forEach((id, index) => {
