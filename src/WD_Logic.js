@@ -290,6 +290,7 @@ function updateDetailedDataSections(data,isCel) {
         updateAQISection(data);
         updateMoonSection(data.forecast);
         updateSunSection(data.forecast);
+        updatePressureSection(data);
 }
 function updateWeatherDataInUI(data){
 
@@ -567,6 +568,12 @@ function updateSunSection({forecastday:[{astro:{ sunrise, sunset}}]}){
     Sun_ids.forEach((id, index) => {
         document.getElementById(id).textContent = Sun_vals[index];
     });
+}
+
+function updatePressureSection({current:{pressure_mb}}){
+    const PressureID = 'PressureValue';
+    const Pressure= document.getElementById(PressureID);
+    Pressure.textContent = `${pressure_mb} mb`;
 }
 
 

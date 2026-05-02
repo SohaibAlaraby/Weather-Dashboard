@@ -303,7 +303,7 @@ body {
     width: 55%;
 }
 
-#TodayDetailedInfoContainer h3, #NextDaysPredictionContainer h3, #UVIndex h3, #HumiditySection h3, #VisibilitySection h3, #DewPointSection h3,#AQIContainer h3{
+#TodayDetailedInfoContainer h3, #NextDaysPredictionContainer h3, #UVIndex h3, #HumiditySection h3, #VisibilitySection h3, #DewPointSection h3,#AQIContainer h3,#PressureSection h3{
     text-transform: capitalize;
     font-weight: 400;
     margin-top:0;
@@ -338,7 +338,7 @@ body {
     width:30%;
     
 }
-#UVIndex, #HumiditySection, #VisibilitySection, #DewPointSection, #AQIContainer{
+#UVIndex, #HumiditySection, #VisibilitySection, #DewPointSection, #AQIContainer,#PressureSection{
     background-color: rgba(0, 0, 0, 0.247);
     width:30%;
     min-width: 300px;
@@ -350,7 +350,7 @@ body {
     justify-content: space-between;
     
 }
-#UVIndex h3, #HumiditySection h3, #VisibilitySection h3,#DewPointSection h3, #AQIContainer h3{
+#UVIndex h3, #HumiditySection h3, #VisibilitySection h3,#DewPointSection h3, #AQIContainer h3,#PressureSection h3{
     display:flex;
     align-items: center;
     gap: 4px;
@@ -360,7 +360,7 @@ body {
     font-size: 28px;
     font-weight: 500;
 }
-#VisibilityValue, #DewPointValue{
+#VisibilityValue, #DewPointValue, #PressureValue{
     font-size: 56px;
     font-weight: 500;
     margin:0;
