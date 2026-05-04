@@ -77,28 +77,38 @@ async function loadInitialData(event){
 }
 function handleInput(event) {
     let value = event.target.value.trim();
-    if(!event.target.value || validateCityName(value)) deleteWarningMessage();
+    if(!event.target.value || validateCityName(value)) deleteWarningMessage('WarningMessage');
 }
 function validateCityName(city) {
     const validPattern = /^[a-zA-Z\u0600-\u06FF\s\-']+$/;//allow [English Arabic space - ']
     if(city && validPattern.test(city)) return true;
     return false;
 }
-function showWarningMessage(message) {
-    let p = SearchBarContainer.querySelector('p');
-    if(!p) {
-        p = document.createElement('p');
-        p.textContent=message;
-        p.classList.add("errorMessage");
-        SearchBarContainer.append(p);
-        return;
-    }
-    p.textContent=message;
+function createNewElement(tag,elementID,containerID){
+        if(!containerID || !tag) return null;
+        const container= document.getElementById(containerID);
+        if (!container) return null;
+        const element = document.createElement(tag);
+        element.id = elementID;
+        // SearchBarContainer.append(p);
+        container.append(element);
+        return element;
 }
-function deleteWarningMessage() {
-    let p = SearchBarContainer.querySelector('p');
-    if(!p) return;
-    p.remove();
+function showWarningMessage(warningElementID,warningContainerID,message) {
+    if(!warningElementID) return;
+    let warningElement = document.getElementById(warningElementID);
+    if(!warningElement) {
+        warningElement = createNewElement('p',warningElementID,warningContainerID);
+        if(!warningElement) return;
+    }
+    warningElement.textContent=message;
+    warningElement.classList.remove('hidden');
+}
+function deleteWarningMessage(warningElementID) {
+    if(!warningElementID) return;
+    let warningElement = document.getElementById(warningElementID);
+    if(!warningElement) return;
+    warningElement.classList.add('hidden');
 }
 function getWeatherGroup(code) {
     const groups = {
@@ -309,10 +319,10 @@ async function searchBtnPressed(event) {
     let SearchInputContent = SearchInput.value.trim(); //trim all spaces from start and end
     let isValidContent = validateCityName(SearchInputContent);
     if(!isValidContent){ 
-        showWarningMessage("Please input a valid city name");
+        showWarningMessage('WarningMessage','SearchContainer','Please input a valid city name');
         return;
     }
-    deleteWarningMessage();
+    deleteWarningMessage('WarningMessage');
     let data;
     try{
         data = await fetchWeatherData(SearchInputContent);
@@ -323,9 +333,9 @@ async function searchBtnPressed(event) {
         }
     }catch(error){
         if(!navigator.onLine || error instanceof TypeError){
-            showWarningMessage("Network error: Please check your connection.");
+            showWarningMessage('WarningMessage','SearchContainer','Network error: Please check your connection.');
         } else  {
-            showWarningMessage(error.message);
+            showWarningMessage('WarningMessage','SearchContainer',error.message);
         }
         return;
     }

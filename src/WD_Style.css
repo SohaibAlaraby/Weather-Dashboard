@@ -100,7 +100,7 @@ body {
 .WeatherAppContainer {
     /* background-color: rgba(172, 255, 47, 0.293); */
     padding: 0px 5%;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(0.25rem);
     color:white;
     min-height: 100vh;
     width:100%;
@@ -112,57 +112,66 @@ body {
     gap: var(--WeatherAppContainer-gap);
     
 }
+
 /* header */
-.WeatherAppHeader{
+.weather-header{
     /* background-color: rgb(0, 87, 186); */
     display:flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    padding:3rem 0rem;
+    gap:1rem;
 }
-#City-Country-Date-Time {
+.location-info {
     width:50%;
     flex-grow:1;
 }
-#City {
-    font-size: 60px;
+.location-info h1{
+    font-size: 3.5rem;
     text-transform: capitalize;
-    margin-bottom:0px;
+    margin:0px;
     font-weight: 800;
 
 }
-#Country {
-    font-size: 40px;
+.location-info p{
+    font-size: 2.75rem;
     text-transform: capitalize;
     margin:0px;
     font-weight: 600;
 
 }
-#Date-Time {
-    font-size:18px;
+.location-info time{
+    font-size:1.75rem;
 }
-#Date {
+.location-info time span{
     text-transform: capitalize;
 }
-#SearchIn-SearchBtn-LocationBtn {
-    width: 50%;
-    min-width: 300px;
+#SearchContainer{
     display:flex;
+    flex-direction: column;
     flex-grow:1;
+}
+.search-form{
+    /* width: 50%; */
+    min-width: 25rem;
+    display:flex;
+    justify-content: flex-end;
+    gap:1rem;
     
 }
-.WeatherAppHeader .SearchIn-SearchBtn {
+.search-group {
     position:relative;
-    margin-right:10px;
+    /* width:50%; */
     flex-grow:1;
     
 }
 #SearchIn {
     width:100%;
-    min-width: 320px;
+    /* min-width: 23rem; */
     padding:var(--input-padding);
     border:none;
-    border-radius: 8px;
+    border-radius: 1rem;
     /* height:100%; */
     color:black;
     font-size: 16px;
@@ -174,40 +183,39 @@ body {
     color:transparent;
     transition: 0.3s;
 }
-#SearchBtn {
-    padding:var(--input-padding) Calc(2 * var(--input-padding));
-    /* height:100%; */
-    font-size: 16px;
+.button{
+    font-size: 1rem;
     background-color: #15249C;
     border:none;
-    border-radius: 8px;
-    position:absolute;
-    right:0;
-    top:0;
+    border-radius: 1rem;
     text-transform: capitalize;
     cursor:pointer;
 }
+#SearchBtn {
+    padding:var(--input-padding) Calc(2 * var(--input-padding));
+    /* height:100%; */
+    position:absolute;
+    right:0;
+    top:0;
+
+}
 #LocationBtn{     
-    height:100%;
-    align-self: stretch;
-    padding: var(--input-padding);
-    aspect-ratio: 1 / 1;
-   
-    flex-shrink: 0;     
-    font-size: 16px;
-    background-color: #15249C;
-    border: none;
-    border-radius: 8px;
+    /* height:100%; */
+    /* align-self: stretch; */
+    /* padding: var(--input-padding); */
     display: flex;     
     align-items: center;
     justify-content: center;
-    cursor:pointer;
+    /* padding:1em auto; */
+    /* aspect-ratio: 1 / 1; */
+    /* flex-shrink: 0;      */
 }
-#LocationBtn:hover, #SearchBtn:hover {
+.button:hover {
     background-color: blue;
 }
 /* Main */
 /* main information section */
+
 #WeatherAppMain{
     display:flex;
     flex-wrap: wrap;
@@ -231,7 +239,7 @@ body {
 }
 
 #Temp{
-    font-size: 130px;
+    font-size: 150px;
     margin-right: 15px;
     /* margin-block-start: 0.5em; */
     /* margin-block-end: 0.5em; */
@@ -284,7 +292,7 @@ body {
 #WeatherIcon {
     
     width:25%;
-    min-width: 200px;
+    min-width: 170px;
     /* to prevent vertical stretch if window ratio changes */
     align-self:center;
     flex-shrink: 0;
@@ -534,4 +542,30 @@ body {
 .MoonTime, .SunTime {
     font-size: 1.25em;
     font-weight: 500px;
+}
+@media (max-width:640px) {
+    .WeatherAppContainer {
+        padding: 0 2%;
+    }
+    .location-info h1{
+        font-size: 3rem;
+    }
+    .location-info p{
+        font-size: 2.25rem;
+    }
+    .location-info time{
+        font-size:1.25rem;
+    }
+    .search-form{
+        min-width: 19rem;
+    }
+     #Temp{
+        font-size: 80px;
+    }
+     #Units{
+        font-size: 20px;
+    }
+     #WeatherCondition {
+        font-size: 20px;
+    }
 }

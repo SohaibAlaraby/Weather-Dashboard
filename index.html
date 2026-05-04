@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <!-- Include font awesome icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
     <!-- Include Google roboto fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,19 +19,28 @@
         <button id="TryAgain" class="TryAgain hidden"><span class="material-symbols-outlined">refresh</span>Try Again</button>
     </div>
     <div id="WeatherAppContainer" class="WeatherAppContainer hideWeatherAppContainer">
-        <header id="WeatherAppHeader" class="WeatherAppHeader">
-            <div id = "City-Country-Date-Time">
-                <p id="City">Anonymous City</p> 
+        <header id="WeatherAppHeader" class="weather-header">
+            <div class="location-info">
+                <h1 id="City">Anonymous City</h1>
                 <p id="Country">Anonymous Country</p>
-                <p id = "Date-Time"><span id="Date">No Date</span> | <span id="Time">No Time</span></p>
+                <time id="Date-Time">
+                    <span id="Date">No Date</span> | <span id="Time">No Time</span>
+                </time>
             </div>
-            <div id="SearchIn-SearchBtn-LocationBtn">
-                <div id="SearchIn-SearchBtn" class="SearchIn-SearchBtn">
-                    <input type="search" id="SearchIn" placeholder="Enter city name">
-                    <button id="SearchBtn">search</button>
-                </div>
-                <button id="LocationBtn"><span class="material-symbols-outlined">location_on</span></button>
+            <div id="SearchContainer">
+                <form id="SearchArea" class="search-form" role="search">
+                    <div id="SearchIn-SearchBtn" class="search-group">
+                        <label for="SearchIn" class="hidden">Search city</label>
+                        <input type="search" id="SearchIn" placeholder="Enter city name">
+                        <button type="submit" id="SearchBtn" class="button">Search</button>
+                    </div>  
+                    <button type="button" id="LocationBtn" aria-label="Use current location" class="button">
+                        <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+                    </button>
+                </form>
+                <p id="WarningMessage" class="errorMessage hidden"></p>
             </div>
+            
         </header>
 
         <main id="WeatherAppMain" class="WeatherAppMain">
