@@ -28,6 +28,7 @@ SearchInput.addEventListener("input",handleInput);
 function ChangeArialPressed(celBtnID,fahBtnID,isCel){
     const celBtn = document.getElementById(celBtnID);  
     const fahBtn = document.getElementById(fahBtnID);  
+    if(!celBtn || !fahBtn) return;
     celBtn.ariaPressed = `${isCel}`;
     fahBtn.ariaPressed = `${!isCel}`;
 
@@ -375,43 +376,84 @@ function prepareURL(city,baseURL){
     return `${baseURL}${params}`;
 }
 function createHourlyBar({forecastday:[{hour:hourArr}]},isCel){
+    const HourlyBarContainer = document.getElementById('TodayDetailedInfo');
+    if (!HourlyBarContainer) return;
 
-    const HourlyBarContainer = document.getElementById("TodayDetailedInfo");
-    HourlyBarContainer.innerHTML = hourArr.map((hour,index) => {
-        let Time = new Date(hour.time).toLocaleTimeString('en-US',{
-        hour12:true,
-        hour:"2-digit"
+    const fragment = document.createDocumentFragment();
+
+    hourArr.forEach((hour, index) => {
+        const timeValue = new Date(hour.time);
+        const displayTime = timeValue.toLocaleTimeString('en-US', {
+            hour12: true,
+            hour: "2-digit"
+        });
+        const isoTime = hour.time;
+
+        const li = document.createElement('li');
+        li.className = 'HourlyDailyCard';
+        li.setAttribute('data-hour-index', index);
+        li.setAttribute('tabindex', '0'); 
+        li.innerHTML = `
+            <time datetime='${isoTime}'>${displayTime}</time>
+            <img src="https://${hour.condition.icon}" alt="${hour.condition.text}" aria-hidden="true">
+            <span>${Math.round(isCel ? hour.temp_c : hour.temp_f)}°</span>
+            <span class="centerVertically position-relative">
+                <span class="material-symbols-outlined" aria-hidden="true">humidity_high</span>
+                <span class="sr-only">Humidity:</span> ${hour.humidity}%
+            </span>
+        `;
+
+        fragment.appendChild(li);
     });
-
-        return `
-        <div class="HourByHourInfo" data-hour-index=${index} >
-            <span>${Time}</span>
-            <img src="https://${hour.condition.icon}" alt="${hour.condition.text}" title="${hour.condition.text}">
-            <span>${isCel?hour.temp_c:hour.temp_f}°</span>
-            <span class="centerVertically"><span class="material-symbols-outlined">humidity_high</span> ${hour.humidity}%</span>
-        </div>
-        `
-    }).join('');
+    HourlyBarContainer.innerHTML = ''; 
+    HourlyBarContainer.appendChild(fragment);
 }
 
 function createDaysBar({forecastday}, isCel) {
+    
+    const dailyForcastContainer = document.getElementById('NextDaysPrediction')
+    if (!dailyForcastContainer) return;
 
-    const DaysBarContainer = document.getElementById('NextDaysPrediction');
-    const Days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    DaysBarContainer.innerHTML = forecastday.map((day,index) => {
-        let dateObj= new Date(day.date);
-        let dayName = index === 0? "Today" : Days[dateObj.getDay()];
-        let [maxtemp, mintemp] = isCel?[day.day.maxtemp_c, day.day.mintemp_c]:[day.day.maxtemp_f, day.day.mintemp_f];
-        let humidity = day.day.avghumidity;
-        return `
-        <div class="DayByDayInfo" data-day-index =${index} >
-            <span>${dayName}</span>
-            <img src="https://${day.day.condition.icon}" alt="${day.day.condition.text}" title="${day.day.condition.text}">
-            <span class="centerVertically"><span class="material-symbols-outlined">north</span> ${maxtemp}° <span class="material-symbols-outlined">south</span> ${mintemp}°</span>
-            <span class="centerVertically"><span class="material-symbols-outlined">humidity_high</span> ${humidity}%</span>
-        </div>
-        ` 
-    }).join('');
+    const fragment = document.createDocumentFragment();
+    
+    const dayNameFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'long' });
+
+    forecastday.forEach((day, index) => {
+        const dateObj = new Date(day.date);
+        
+        let dayName = index === 0 ? "Today" : dayNameFormatter.format(dateObj);
+
+        const { maxtemp_c, mintemp_c, maxtemp_f, mintemp_f, avghumidity } = day.day;
+        const { icon, text } = day.day.condition;
+
+        const max = Math.round(isCel ? maxtemp_c : maxtemp_f);
+        const min = Math.round(isCel ? mintemp_c : mintemp_f);
+
+        const li = document.createElement('li');
+        li.className = 'HourlyDailyCard'; 
+        li.setAttribute('data-day-index', index);
+        li.setAttribute('tabindex', '0');
+
+        li.innerHTML = `
+            <time datetime="${day.date}">${dayName}</time>
+            <img src="https://${icon}" alt="${text}" aria-hidden="true">
+            <span class="centerVertically position-relative">
+                <span class="material-symbols-outlined" aria-hidden="true">north</span>
+                <span class="sr-only">Max temp:</span> ${max}° 
+                <span class="material-symbols-outlined" aria-hidden="true">south</span>
+                <span class="sr-only">Min temp:</span> ${min}°
+            </span>
+            <span class="centerVertically position-relative">
+                <span class="material-symbols-outlined" aria-hidden="true">humidity_high</span>
+                <span class="sr-only">Humidity:</span> ${avghumidity}%
+            </span>
+        `;
+
+        fragment.appendChild(li);
+    });
+
+    dailyForcastContainer.innerHTML = '';
+    dailyForcastContainer.appendChild(fragment);
 
 }
 

@@ -19,7 +19,7 @@
         <button id="TryAgain" class="TryAgain hidden"><span class="material-symbols-outlined">refresh</span>Try Again</button>
     </div>
     <div id="WeatherAppContainer" class="WeatherAppContainer hideWeatherAppContainer">
-        <header id="WeatherAppHeader" class="horizontal-flex-wrap">
+        <header id="WeatherAppHeader" class="horizontal-flex-wrap alignCenter">
             <div class="location-info">
                 <h1 id="City">Anonymous City</h1>
                 <h2 id="Country">Anonymous Country</h2>
@@ -29,8 +29,8 @@
             </div>
             <div id="SearchContainer">
                 <form id="SearchArea" class="search-form" role="search">
-                    <div id="SearchIn-SearchBtn" class="search-group">
-                        <label for="SearchIn" class="hidden">Search city or country</label>
+                    <div id="SearchIn-SearchBtn" class="search-group position-relative">
+                        <label for="SearchIn" class="sr-only">Search city or country</label>
                         <input type="search" id="SearchIn" placeholder="Enter city name">
                         <button type="submit" id="SearchBtn" class="button">Search</button>
                     </div>  
@@ -45,8 +45,8 @@
 
         <main id="WeatherAppMain" class="WeatherAppMain">
 
-            <section id="MainInfo" class="horizontal-flex-wrap">
-                <h2 id="current-weather-heading" class="hidden">Current Weather Conditions</h2>
+            <section id="MainInfo" class="horizontal-flex-wrap position-relative">
+                <h2 id="MainInfoHeading" class="sr-only">Current Weather Conditions</h2>
                 <div role="group" id="Temp-Units-WeatherCondition">
                     <span id="Temp" aria-live="polite"></span>
                     <div role="group" id="Units-WeatherCondition">
@@ -70,12 +70,12 @@
                         </li>
 
                         <li id="MaxMinTemp" >
-                            <p>
+                            <p class="position-relative">
                                 <span class="material-symbols-outlined" aria-hidden="true">north</span>
-                                <span class="hidden">Maximum Temperature:</span>
+                                <span class="sr-only">Maximum Temperature:</span>
                                 <span id="MaxTemp"></span> 
                                 <span class="material-symbols-outlined" aria-hidden="true">south</span>
-                                <span class="hidden">Minimum Temperature:</span>
+                                <span class="sr-only">Minimum Temperature:</span>
                                 <span id="MinTemp"></span>
                             </p>
                         </li>
@@ -86,147 +86,156 @@
                             </p>
                         </li>
 
-                        <li id="Wind" class="centerVertically">
+                        <li id="Wind" class="centerVertically position-relative">
                             <p>
                                 <span class="material-symbols-outlined" aria-hidden="true">air</span> Wind Speed: 
                                 <span id="WindSpeed"></span>,
-                                <span class="hidden">Direction:</span>
+                                <span class="sr-only">Direction:</span>
                                 <span id = "windDirection"></span>
                             </p>
                         </li>
 
-                        </ul>
+                    </ul>
                 </div>
             </section>
 
-            <section id="TodayDetailedInfoContainer">
-                <h3>today</h3>
-                <section id="TodayDetailedInfo"></section>
+            <section id="HourlyDailyInfoContainer" class="horizontal-flex-wrap position-relative">
+                <h2 id="HourlyDailyInfoHeading" class="sr-only">Today's Detailed Info and 3-Day Forecast</h2>
+                <section id="TodayDetailedInfoContainer" class="HourltyDailyForcast" aria-labelledby="hourly-heading">
+                    <header>
+                        <h3>Today</h3>
+                    </header>
+                    <ol id="TodayDetailedInfo" class="HourlyDailyCardSlider" aria-label="hourly forecast for today"></ol>
+                </section>
+                <section id="NextDaysPredictionContainer" class="HourltyDailyForcast">
+                    <header>
+                        <h3>daily forcast</h3>
+                    </header>
+                    <ol id="NextDaysPrediction" class="HourlyDailyCardSlider" aria-label="3-day forecast"></ol>
+                </section>
             </section>
-            <section id="NextDaysPredictionContainer">
-                <h3>daily forcast</h3>
-                <section id="NextDaysPrediction"></section>
-            </section>
+            <section class="horizontal-flex-wrap">
+                <section id="AQIContainer">
+                    <header>
+                        <h3>
+                            <span class="material-symbols-outlined">airwave</span>
+                            AQI
+                        </h3>
+                    </header>
+                    <div id = "AQIContent">
+                        <p id="AQIState"></p>
+                        <div id="AQIBarContainer">
+                            <div id="AQIBarFill"></div>
+                        </div>
+                        <details>
+                            <summary>
+                                <span>details</span>
+                            </summary>
+                            <div class="aqi-grid">  
+                                    <div class="aqi-item" id="PM10">
+                                        <span>PM10:</span>
+                                        <span class="aqi-value">12.5</span>
+                                        <span class="dot dot--green"></span> 
+                                    </div>
+                                    <div class="aqi-item" id="PM25">
+                                        <span>PM2.5:</span>
+                                        <span class="aqi-value">12.5</span>
+                                        <span class="dot dot--green"></span> 
+                                    </div>
 
-            <section id="AQIContainer">
-                <header>
-                    <h3>
-                        <span class="material-symbols-outlined">airwave</span>
-                        AQI
-                    </h3>
-                </header>
-                <div id = "AQIContent">
-                    <p id="AQIState"></p>
-                    <div id="AQIBarContainer">
-                        <div id="AQIBarFill"></div>
+                                    <div class="aqi-item" id="CO">
+                                        <span>CO:</span>
+                                        <span class="aqi-value">12.5</span>
+                                        <span class="dot dot--green"></span>
+                                    </div>
+                                    <div class="aqi-item" id="SO2">
+                                        <span>SO<sub>2</sub>:</span>
+                                        <span class="aqi-value">12.5</span>
+                                        <span class="dot dot--green"></span>
+                                    </div>
+                                    <div class="aqi-item" id="NO2">
+                                        <span>NO<sub>2</sub>:</span>
+                                        <span class="aqi-value">12.5</span>
+                                        <span class="dot dot--green"></span>
+                                    </div>
+                                    
+                                    <div class="aqi-item" id="O3">
+                                        <span>O<sub>3</sub>:</span>
+                                        <span class="aqi-value">12.5</span>
+                                        <span class="dot dot--orange"></span>
+                                    </div>
+                                </div>
+                        </details>
                     </div>
-                    <details>
-                        <summary>
-                            <span>details</span>
-                        </summary>
-                        <div class="aqi-grid">  
-                                <div class="aqi-item" id="PM10">
-                                    <span>PM10:</span>
-                                    <span class="aqi-value">12.5</span>
-                                    <span class="dot dot--green"></span> 
-                                </div>
-                                <div class="aqi-item" id="PM25">
-                                    <span>PM2.5:</span>
-                                    <span class="aqi-value">12.5</span>
-                                    <span class="dot dot--green"></span> 
-                                </div>
-
-                                <div class="aqi-item" id="CO">
-                                    <span>CO:</span>
-                                    <span class="aqi-value">12.5</span>
-                                    <span class="dot dot--green"></span>
-                                </div>
-                                <div class="aqi-item" id="SO2">
-                                    <span>SO<sub>2</sub>:</span>
-                                    <span class="aqi-value">12.5</span>
-                                    <span class="dot dot--green"></span>
-                                </div>
-                                <div class="aqi-item" id="NO2">
-                                    <span>NO<sub>2</sub>:</span>
-                                    <span class="aqi-value">12.5</span>
-                                    <span class="dot dot--green"></span>
-                                </div>
-                                
-                                <div class="aqi-item" id="O3">
-                                    <span>O<sub>3</sub>:</span>
-                                    <span class="aqi-value">12.5</span>
-                                    <span class="dot dot--orange"></span>
-                                </div>
-                            </div>
-                    </details>
-                </div>
-            </section>
-            
-            <section id="UVIndex">
-                <h3><span class="material-symbols-outlined">wb_sunny</span>UV index</h3>
-                <div>
-                    <p id="UVIndexDescribtion">low</p>
-                    <div id="UVBar">
-                        <div id="UVPointer">0</div>
-                    </div>
-                </div>
-            </section>
-            <section id="HumiditySection">
-                <h3><span class="material-symbols-outlined">humidity_high</span>Humidity</h3>
-                <div>
-                    <p id="HumidityDescription"></p>
-                    <div id="HumidityBar1">
-                        <div id="HumidityBar2"></div>
-                    </div>
-                </div>
-            </section>
-            <section id="VisibilitySection">
-                <h3><span class="material-symbols-outlined">visibility</span>Visibility</h3>
-                <p id="VisibilityDescription"></p>
-                <p id="VisibilityValue"></p>
-            </section>
-            <section id="DewPointSection">
-                <h3><span class="material-symbols-outlined">dew_point</span>Dew Point</h3>
-                <p id="DewPointDescription"></p>
-                <p id="DewPointValue"></p>
-            </section>
-            <section id="PressureSection">
-                <h3><span class="material-symbols-outlined">compress</span>Pressure</h3>
-                <p id="PressureValue"></p>
-            </section>
-            <section id="MoonContainer">
-                <div id="MoonContent">
+                </section>
+                
+                <section id="UVIndex">
+                    <h3><span class="material-symbols-outlined">wb_sunny</span>UV index</h3>
                     <div>
-                        <p class="subtitle">Moonrise</p>
-                        <p id="MoonriseTime" class="MoonTime">4:00 PM</p>
+                        <p id="UVIndexDescribtion">low</p>
+                        <div id="UVBar">
+                            <div id="UVPointer">0</div>
+                        </div>
                     </div>
+                </section>
+                <section id="HumiditySection">
+                    <h3><span class="material-symbols-outlined">humidity_high</span>Humidity</h3>
                     <div>
-                        <p class="subtitle">Moonset</p>
-                        <p id="MoonsetTime" class="MoonTime">4:00 PM</p>
+                        <p id="HumidityDescription"></p>
+                        <div id="HumidityBar1">
+                            <div id="HumidityBar2"></div>
+                        </div>
                     </div>
-                </div>
-                <div id="MoonVisualize">
-                    <img id = "MoonImage" src="/Icons/NewMoon.png" alt="">
-                    <p id="MoonPhase" class="MoonTime">New Moon</p>
-                </div>
+                </section>
+                <section id="VisibilitySection">
+                    <h3><span class="material-symbols-outlined">visibility</span>Visibility</h3>
+                    <p id="VisibilityDescription"></p>
+                    <p id="VisibilityValue"></p>
+                </section>
+                <section id="DewPointSection">
+                    <h3><span class="material-symbols-outlined">dew_point</span>Dew Point</h3>
+                    <p id="DewPointDescription"></p>
+                    <p id="DewPointValue"></p>
+                </section>
+                <section id="PressureSection">
+                    <h3><span class="material-symbols-outlined">compress</span>Pressure</h3>
+                    <p id="PressureValue"></p>
+                </section>
             </section>
-
-            <section id="SunContainer">
-                <div id="SunContent">
-                    <div>
-                        <p class="subtitle">Sunrise</p>
-                        <p id="SunriseTime" class="SunTime">6:00 AM</p>
+            <section class="horizontal-flex-wrap">
+                <section id="MoonContainer">
+                    <div id="MoonContent">
+                        <div>
+                            <p class="subtitle">Moonrise</p>
+                            <p id="MoonriseTime" class="MoonTime">4:00 PM</p>
+                        </div>
+                        <div>
+                            <p class="subtitle">Moonset</p>
+                            <p id="MoonsetTime" class="MoonTime">4:00 PM</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="subtitle">Sunset</p>
-                        <p id="SunsetTime" class="SunTime">6:00 PM</p>
+                    <div id="MoonVisualize">
+                        <img id = "MoonImage" src="/Icons/NewMoon.png" alt="">
+                        <p id="MoonPhase" class="MoonTime">New Moon</p>
                     </div>
-                </div>
-                <div id="SunVisualize">
-                    <img id = "SunImage" src="/Icons/Sun.png" alt="Sun Icon">
-                </div>
-            </section>
+                </section>
 
+                <section id="SunContainer">
+                    <div id="SunContent">
+                        <div>
+                            <p class="subtitle">Sunrise</p>
+                            <p id="SunriseTime" class="SunTime">6:00 AM</p>
+                        </div>
+                        <div>
+                            <p class="subtitle">Sunset</p>
+                            <p id="SunsetTime" class="SunTime">6:00 PM</p>
+                        </div>
+                    </div>
+                    <div id="SunVisualize">
+                        <img id = "SunImage" src="/Icons/Sun.png" alt="Sun Icon">
+                    </div>
+                </section>
+            </section>    
         </main>
     </div>
     <script type="module" src = "src/WD_Logic.js"></script>

@@ -1,5 +1,6 @@
 :root {
     --page-padding:20px;
+    --border-radius: 1rem;
     --search-font-size: 1rem;
     --search-padding:1em;
     --mainInfo-font-size:40px;
@@ -119,11 +120,14 @@ body {
     /* background-color: rgb(0, 87, 186); */
     width:100%;
     display:flex;
-    justify-content: space-between;
-    align-items: center;
+    /* justify-content: space-between; */
+    /* align-items: center; */
     flex-wrap: wrap;
     padding:3rem 0rem;
     gap:1rem;
+}
+.alignCenter{
+    align-items: center;
 }
 .location-info {
     width:50%;
@@ -207,12 +211,12 @@ body {
 }
 /* Main */
 /* main information section */
-
+/* 
 main{
     display:flex;
     flex-wrap: wrap;
     gap:var(--WeatherAppMain-gap);
-}
+} */
 
 #Temp-Units-WeatherCondition{
     /* width:50%; */
@@ -263,7 +267,7 @@ main{
 
     
 }
-ul {
+ul,ol {
     list-style: none;
     padding:0;
     margin:0;
@@ -285,60 +289,59 @@ ul {
     flex-shrink: 0;
 }
 
-#TodayDetailedInfoContainer, #NextDaysPredictionContainer{
+.HourltyDailyForcast{
     background-color: rgba(255, 255, 255, 0.123);
-    width:30%;
     min-width: 350px; 
-    display:inline;
     padding:28px 18px;
     flex-grow: 1;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
 }
 #TodayDetailedInfoContainer {
-    width: 55%;
+    width: 60%;
 }
-
-#TodayDetailedInfoContainer h3, #NextDaysPredictionContainer h3, #UVIndex h3, #HumiditySection h3, #VisibilitySection h3, #DewPointSection h3,#AQIContainer h3,#PressureSection h3{
+#NextDaysPredictionContainer{
+    width:30%;
+}
+.hight100{
+    height:100%;
+}
+.HourltyDailyForcast h3, #UVIndex h3, #HumiditySection h3, #VisibilitySection h3, #DewPointSection h3,#AQIContainer h3,#PressureSection h3{
     text-transform: capitalize;
     font-weight: 400;
     margin-top:0;
 }
 
-#TodayDetailedInfo, #NextDaysPrediction{
+.HourlyDailyCardSlider{
     display: flex;
     overflow-x: auto;
     scroll-behavior:smooth;
-    gap:8px;
+    gap:0.5rem;
 }
 
-#TodayDetailedInfo .HourByHourInfo, #NextDaysPrediction .DayByDayInfo{
+.HourlyDailyCard{
     background-color: #0e548d;
     padding:16px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     display:flex;
     align-items: center;
     flex-direction: column;
     gap:8px;
+}
+#NextDaysPrediction{
+    justify-content: center;
+    width:auto;
 }
 .centerVertically{
     display:flex;
     align-items: center;
     flex-wrap:wrap;
 }
-#NextDaysPrediction{
-    justify-content: center;
-    width:auto;
-}
-#NextDaysPrediction .DayByDayInfo{
-    width:30%;
-    
-}
 #UVIndex, #HumiditySection, #VisibilitySection, #DewPointSection, #AQIContainer,#PressureSection{
     background-color: rgba(0, 0, 0, 0.247);
     width:30%;
     min-width: 300px;
     padding:36px 18px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     flex-grow:1;
     display: inline-flex;
     flex-direction: column;
@@ -369,7 +372,7 @@ ul {
 #UVBar, #HumidityBar1, #AQIBarContainer{
     width:100%;
     height: 20px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
 }
 #UVBar {
     
@@ -386,7 +389,7 @@ ul {
 }
 #HumidityBar2, #AQIBarFill{
     height: 20px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     
 }
 #HumidityBar2{
@@ -437,7 +440,7 @@ ul {
 #AQIContainer details{
     
     padding: 8px;
-    border-radius: 8px;
+    border-radius: vaer(--border-radius);
     color:white;
     margin-top: 16px;
 }
@@ -462,7 +465,7 @@ ul {
     font-size: 18px;
     background-color: #0e548d;
     padding: 8px;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     gap:8px;
 
 }
@@ -482,16 +485,27 @@ ul {
 .dot--darkred{
     background-color: #7e0023;
 }
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+.position-relative{
+    position:relative;
+}
 #MoonContainer p, #SunContainer p{
     margin:0;
 }
 #MoonContainer, #SunContainer {
     background-color: rgba(0, 0, 0, 0.247);
-    width:30%;
-    min-width: 300px;
-    max-width: calc(1920px/3);
     padding:18px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     flex-grow:1;
     display: inline-flex;
     justify-content: space-evenly;
