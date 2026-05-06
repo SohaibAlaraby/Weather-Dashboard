@@ -21,11 +21,20 @@ window.addEventListener('load', loadInitialData);
 TryAgainbtn.addEventListener('click',loadInitialData);
 
 SearchBtn.addEventListener("click",searchBtnPressed);
-CelBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,true); });
-FahBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,false); });
+CelBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,true,'CelciusBtn','FahrenheitBtn'); });
+FahBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,false,'CelciusBtn','FahrenheitBtn'); });
 
 SearchInput.addEventListener("input",handleInput);
-function changeTempUnit(data,isCel) {
+function ChangeArialPressed(celBtnID,fahBtnID,isCel){
+    const celBtn = document.getElementById(celBtnID);  
+    const fahBtn = document.getElementById(fahBtnID);  
+    celBtn.ariaPressed = `${isCel}`;
+    fahBtn.ariaPressed = `${!isCel}`;
+
+
+}
+function changeTempUnit(data,isCel,celBtnID,fahBtnID) {
+    ChangeArialPressed(celBtnID,fahBtnID,isCel)
     updateTempAndWeatherCondition(data.current,isCel);
     updateExtraWeatherInfo(data, isCel);
     createHourlyBar(data.forecast,isCel);
@@ -203,7 +212,7 @@ function setWeatherState(WeatherState){
 }
 function setMainTemp(temp_c,temp_f,isCel){
     const TempUI = document.getElementById('Temp');
-    TempUI.textContent = isCel? temp_c : temp_f;
+    TempUI.textContent = Math.round(isCel? temp_c : temp_f);
 }
 function setTempBtn(isCel) {
     const FahBtnUI = document.getElementById('FahrenheitBtn');

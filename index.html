@@ -19,10 +19,10 @@
         <button id="TryAgain" class="TryAgain hidden"><span class="material-symbols-outlined">refresh</span>Try Again</button>
     </div>
     <div id="WeatherAppContainer" class="WeatherAppContainer hideWeatherAppContainer">
-        <header id="WeatherAppHeader" class="weather-header">
+        <header id="WeatherAppHeader" class="horizontal-flex-wrap">
             <div class="location-info">
                 <h1 id="City">Anonymous City</h1>
-                <p id="Country">Anonymous Country</p>
+                <h2 id="Country">Anonymous Country</h2>
                 <time id="Date-Time">
                     <span id="Date">No Date</span> | <span id="Time">No Time</span>
                 </time>
@@ -30,7 +30,7 @@
             <div id="SearchContainer">
                 <form id="SearchArea" class="search-form" role="search">
                     <div id="SearchIn-SearchBtn" class="search-group">
-                        <label for="SearchIn" class="hidden">Search city</label>
+                        <label for="SearchIn" class="hidden">Search city or country</label>
                         <input type="search" id="SearchIn" placeholder="Enter city name">
                         <button type="submit" id="SearchBtn" class="button">Search</button>
                     </div>  
@@ -38,43 +38,67 @@
                         <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
                     </button>
                 </form>
-                <p id="WarningMessage" class="errorMessage hidden"></p>
+                <p id="WarningMessage" class="errorMessage hidden" aria-live="assertive"></p>
             </div>
             
         </header>
 
         <main id="WeatherAppMain" class="WeatherAppMain">
-            <section id="MainInfo">
-                <div id="Temp-Units-WeatherCondition">
-                    <p id="Temp">--</p>
-                    <div id="Units-WeatherCondition">
-                        <div id="Units">
-                            <button id="CelciusBtn">&deg;C</button>
-                            <span> | </span>
-                            <button id="FahrenheitBtn" class="deactive-unit">&deg;F</button>
+
+            <section id="MainInfo" class="horizontal-flex-wrap">
+                <h2 id="current-weather-heading" class="hidden">Current Weather Conditions</h2>
+                <div role="group" id="Temp-Units-WeatherCondition">
+                    <span id="Temp" aria-live="polite"></span>
+                    <div role="group" id="Units-WeatherCondition">
+                        <div role="group" id="Units" aria-label="Temperature unit selection">
+                            <button id="CelciusBtn" aria-pressed="true" aria-label="Switch to Celsius">&deg;C</button>
+                            <span aria-hidden="true"> | </span>
+                            <button id="FahrenheitBtn" class="deactive-unit" aria-pressed="false" aria-label="Switch to Fahrenheit">&deg;F</button>
                         </div>
                         
-                        <p id="WeatherCondition">Unknown</p>
+                        <p id="WeatherCondition" aria-live="polite">Unknown</p>
                     </div>
-                    
-
                 </div>
                 <div id="WeatherIcon-ExtraWeatherInfo">
-                    <img src="" alt="Weather State Icon" id="WeatherIcon">
-                    <div id="ExtraWeatherInfo">
-                        <p id="FeelsLike"><span class="material-symbols-outlined">device_thermostat</span> Feels like: <span id="FeelsLikeTemp">--&deg;C</span>
-                        </p>
-                        <p id="MaxMinTemp" class="centerVertically"><span class="material-symbols-outlined">north</span><span id="MaxTemp">--</span> <span class="material-symbols-outlined">south</span><span id="MinTemp">--</span></p>
+                    <img src="" alt="" id="WeatherIcon">
+                    <ul id="ExtraWeatherInfo">
 
-                        <p id="Humidity"><span class="material-symbols-outlined">humidity_high</span> Humidity: <span id="HumidityPercent">--</span>%
-                        </p>
+                        <li id="FeelsLike">
+                            <p>
+                                <span class="material-symbols-outlined" aria-hidden="true">device_thermostat</span> Feels like: <span id="FeelsLikeTemp"></span>
+                            </p>
+                        </li>
 
-                        <p id="Wind" class="centerVertically"><span class="material-symbols-outlined">air</span> Wind: <span id="WindSpeed">-- km/h</span>
-                        , <span id = "windDirection">--</span></p>
+                        <li id="MaxMinTemp" >
+                            <p>
+                                <span class="material-symbols-outlined" aria-hidden="true">north</span>
+                                <span class="hidden">Maximum Temperature:</span>
+                                <span id="MaxTemp"></span> 
+                                <span class="material-symbols-outlined" aria-hidden="true">south</span>
+                                <span class="hidden">Minimum Temperature:</span>
+                                <span id="MinTemp"></span>
+                            </p>
+                        </li>
 
-                    </div>
+                        <li id="Humidity">
+                            <p>
+                                <span class="material-symbols-outlined" aria-hidden="true">humidity_high</span> Humidity: <span id="HumidityPercent"></span>%
+                            </p>
+                        </li>
+
+                        <li id="Wind" class="centerVertically">
+                            <p>
+                                <span class="material-symbols-outlined" aria-hidden="true">air</span> Wind Speed: 
+                                <span id="WindSpeed"></span>,
+                                <span class="hidden">Direction:</span>
+                                <span id = "windDirection"></span>
+                            </p>
+                        </li>
+
+                        </ul>
                 </div>
             </section>
+
             <section id="TodayDetailedInfoContainer">
                 <h3>today</h3>
                 <section id="TodayDetailedInfo"></section>
