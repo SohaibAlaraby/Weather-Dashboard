@@ -6,7 +6,6 @@ const SearchBtn = document.getElementById("SearchBtn");
 const CelBtn = document.getElementById('CelciusBtn');
 const FahBtn = document.getElementById('FahrenheitBtn');
 const SearchBarContainer = document.getElementById("SearchIn-SearchBtn");
-
 const baseURL = "https://api.weatherapi.com/v1/forecast.json?"
 let WeatherData;
 let searchController;
@@ -19,13 +18,20 @@ class WeatherError extends Error {
 const TryAgainbtn = document.getElementById('TryAgain');
 window.addEventListener('load', loadInitialData);
 TryAgainbtn.addEventListener('click',loadInitialData);
-
 SearchBtn.addEventListener("click",searchBtnPressed);
-CelBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,true); });
-FahBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,false); });
+CelBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,true,'CelciusBtn','FahrenheitBtn'); });
+FahBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,false,'CelciusBtn','FahrenheitBtn'); });
 
 SearchInput.addEventListener("input",handleInput);
-function changeTempUnit(data,isCel) {
+function ChangeArialPressed(celBtnID,fahBtnID,isCel){
+    const celBtn = document.getElementById(celBtnID);  
+    const fahBtn = document.getElementById(fahBtnID);  
+    if(!celBtn || !fahBtn) return;
+    celBtn.ariaPressed = `${isCel}`;
+    fahBtn.ariaPressed = `${!isCel}`;
+}
+function changeTempUnit(data,isCel,celBtnID,fahBtnID) {
+    ChangeArialPressed(celBtnID,fahBtnID,isCel)
     updateTempAndWeatherCondition(data.current,isCel);
     updateExtraWeatherInfo(data, isCel);
     createHourlyBar(data.forecast,isCel);
@@ -77,28 +83,38 @@ async function loadInitialData(event){
 }
 function handleInput(event) {
     let value = event.target.value.trim();
-    if(!event.target.value || validateCityName(value)) deleteWarningMessage();
+    if(!event.target.value || validateCityName(value)) deleteWarningMessage('WarningMessage');
 }
 function validateCityName(city) {
     const validPattern = /^[a-zA-Z\u0600-\u06FF\s\-']+$/;//allow [English Arabic space - ']
     if(city && validPattern.test(city)) return true;
     return false;
 }
-function showWarningMessage(message) {
-    let p = SearchBarContainer.querySelector('p');
-    if(!p) {
-        p = document.createElement('p');
-        p.textContent=message;
-        p.classList.add("errorMessage");
-        SearchBarContainer.append(p);
-        return;
-    }
-    p.textContent=message;
+function createNewElement(tag,elementID,containerID){
+        if(!containerID || !tag) return null;
+        const container= document.getElementById(containerID);
+        if (!container) return null;
+        const element = document.createElement(tag);
+        element.id = elementID;
+        // SearchBarContainer.append(p);
+        container.append(element);
+        return element;
 }
-function deleteWarningMessage() {
-    let p = SearchBarContainer.querySelector('p');
-    if(!p) return;
-    p.remove();
+function showWarningMessage(warningElementID,warningContainerID,message) {
+    if(!warningElementID) return;
+    let warningElement = document.getElementById(warningElementID);
+    if(!warningElement) {
+        warningElement = createNewElement('p',warningElementID,warningContainerID);
+        if(!warningElement) return;
+    }
+    warningElement.textContent=message;
+    warningElement.classList.remove('hidden');
+}
+function deleteWarningMessage(warningElementID) {
+    if(!warningElementID) return;
+    let warningElement = document.getElementById(warningElementID);
+    if(!warningElement) return;
+    warningElement.classList.add('hidden');
 }
 function getWeatherGroup(code) {
     const groups = {
@@ -193,7 +209,7 @@ function setWeatherState(WeatherState){
 }
 function setMainTemp(temp_c,temp_f,isCel){
     const TempUI = document.getElementById('Temp');
-    TempUI.textContent = isCel? temp_c : temp_f;
+    TempUI.textContent = Math.round(isCel? temp_c : temp_f);
 }
 function setTempBtn(isCel) {
     const FahBtnUI = document.getElementById('FahrenheitBtn');
@@ -309,10 +325,10 @@ async function searchBtnPressed(event) {
     let SearchInputContent = SearchInput.value.trim(); //trim all spaces from start and end
     let isValidContent = validateCityName(SearchInputContent);
     if(!isValidContent){ 
-        showWarningMessage("Please input a valid city name");
+        showWarningMessage('WarningMessage','SearchContainer','Please input a valid city name');
         return;
     }
-    deleteWarningMessage();
+    deleteWarningMessage('WarningMessage');
     let data;
     try{
         data = await fetchWeatherData(SearchInputContent);
@@ -323,9 +339,9 @@ async function searchBtnPressed(event) {
         }
     }catch(error){
         if(!navigator.onLine || error instanceof TypeError){
-            showWarningMessage("Network error: Please check your connection.");
+            showWarningMessage('WarningMessage','SearchContainer','Network error: Please check your connection.');
         } else  {
-            showWarningMessage(error.message);
+            showWarningMessage('WarningMessage','SearchContainer',error.message);
         }
         return;
     }
@@ -356,51 +372,95 @@ function prepareURL(city,baseURL){
     return `${baseURL}${params}`;
 }
 function createHourlyBar({forecastday:[{hour:hourArr}]},isCel){
+    const HourlyBarContainer = document.getElementById('TodayDetailedInfo');
+    if (!HourlyBarContainer) return;
 
-    const HourlyBarContainer = document.getElementById("TodayDetailedInfo");
-    HourlyBarContainer.innerHTML = hourArr.map((hour,index) => {
-        let Time = new Date(hour.time).toLocaleTimeString('en-US',{
-        hour12:true,
-        hour:"2-digit"
+    const fragment = document.createDocumentFragment();
+
+    hourArr.forEach((hour, index) => {
+        const timeValue = new Date(hour.time);
+        const displayTime = timeValue.toLocaleTimeString('en-US', {
+            hour12: true,
+            hour: "2-digit"
+        });
+        const isoTime = hour.time;
+
+        const li = document.createElement('li');
+        li.className = 'HourlyDailyCard';
+        li.setAttribute('data-hour-index', index);
+        li.setAttribute('tabindex', '0'); 
+        li.innerHTML = `
+            <time datetime='${isoTime}'>${displayTime}</time>
+            <img src="https://${hour.condition.icon}" alt="${hour.condition.text}" aria-hidden="true">
+            <span>${Math.round(isCel ? hour.temp_c : hour.temp_f)}°</span>
+            <span class="centerVertically position-relative">
+                <span class="material-symbols-outlined" aria-hidden="true">humidity_high</span>
+                <span class="sr-only">Humidity:</span> ${hour.humidity}%
+            </span>
+        `;
+
+        fragment.appendChild(li);
     });
-
-        return `
-        <div class="HourByHourInfo" data-hour-index=${index} >
-            <span>${Time}</span>
-            <img src="https://${hour.condition.icon}" alt="${hour.condition.text}" title="${hour.condition.text}">
-            <span>${isCel?hour.temp_c:hour.temp_f}°</span>
-            <span class="centerVertically"><span class="material-symbols-outlined">humidity_high</span> ${hour.humidity}%</span>
-        </div>
-        `
-    }).join('');
+    HourlyBarContainer.innerHTML = ''; 
+    HourlyBarContainer.appendChild(fragment);
 }
 
 function createDaysBar({forecastday}, isCel) {
+    
+    const dailyForcastContainer = document.getElementById('NextDaysPrediction')
+    if (!dailyForcastContainer) return;
 
-    const DaysBarContainer = document.getElementById('NextDaysPrediction');
-    const Days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    DaysBarContainer.innerHTML = forecastday.map((day,index) => {
-        let dateObj= new Date(day.date);
-        let dayName = index === 0? "Today" : Days[dateObj.getDay()];
-        let [maxtemp, mintemp] = isCel?[day.day.maxtemp_c, day.day.mintemp_c]:[day.day.maxtemp_f, day.day.mintemp_f];
-        let humidity = day.day.avghumidity;
-        return `
-        <div class="DayByDayInfo" data-day-index =${index} >
-            <span>${dayName}</span>
-            <img src="https://${day.day.condition.icon}" alt="${day.day.condition.text}" title="${day.day.condition.text}">
-            <span class="centerVertically"><span class="material-symbols-outlined">north</span> ${maxtemp}° <span class="material-symbols-outlined">south</span> ${mintemp}°</span>
-            <span class="centerVertically"><span class="material-symbols-outlined">humidity_high</span> ${humidity}%</span>
-        </div>
-        ` 
-    }).join('');
+    const fragment = document.createDocumentFragment();
+    
+    const dayNameFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'long' });
+
+    forecastday.forEach((day, index) => {
+        const dateObj = new Date(day.date);
+        
+        let dayName = index === 0 ? "Today" : dayNameFormatter.format(dateObj);
+
+        const { maxtemp_c, mintemp_c, maxtemp_f, mintemp_f, avghumidity } = day.day;
+        const { icon, text } = day.day.condition;
+
+        const max = Math.round(isCel ? maxtemp_c : maxtemp_f);
+        const min = Math.round(isCel ? mintemp_c : mintemp_f);
+
+        const li = document.createElement('li');
+        li.className = 'HourlyDailyCard'; 
+        li.setAttribute('data-day-index', index);
+        li.setAttribute('tabindex', '0');
+
+        li.innerHTML = `
+            <time datetime="${day.date}">${dayName}</time>
+            <img src="https://${icon}" alt="${text}" aria-hidden="true">
+            <span class="centerVertically position-relative">
+                <span class="material-symbols-outlined" aria-hidden="true">north</span>
+                <span class="sr-only">Max temp:</span> ${max}° 
+                <span class="material-symbols-outlined" aria-hidden="true">south</span>
+                <span class="sr-only">Min temp:</span> ${min}°
+            </span>
+            <span class="centerVertically position-relative">
+                <span class="material-symbols-outlined" aria-hidden="true">humidity_high</span>
+                <span class="sr-only">Humidity:</span> ${avghumidity}%
+            </span>
+        `;
+
+        fragment.appendChild(li);
+    });
+
+    dailyForcastContainer.innerHTML = '';
+    dailyForcastContainer.appendChild(fragment);
 
 }
 
 function updateUVIndex({current:{uv:UVIndex}}){
 
-    const UVdescription = document.getElementById("UVIndexDescribtion");
+    const UVdescription = document.getElementById("UVIndexDescription");
     const UVPointer = document.getElementById("UVPointer");
-    UVPointer.textContent = UVIndex.toFixed(1);
+    const UVBar = document.getElementById("UVBar");
+    const UVIndexValue = UVIndex.toFixed(1);
+    UVBar.ariaValueNow=`${UVIndexValue}`
+    UVPointer.textContent = UVIndexValue;
     let percentage = (UVIndex/11)*100;
     percentage = percentage>100? 100 : percentage;   
     UVPointer.style.left = `${percentage}%`;
@@ -487,12 +547,14 @@ function updateAQISection({current:{air_quality}}){
     const {status} = getAQIState(air_quality["us-epa-index"]);
     const {'us-epa-index':index} = air_quality;
 
-    const AQI_status = document.getElementById('AQIState'); 
-    const AQI_bar = document.getElementById('AQIBarFill');
+    const AQIStatus = document.getElementById('AQIState'); 
+    const AQIBarContainer = document.getElementById('AQIBarContainer');
+    const AQIBar = document.getElementById('AQIBarFill');
 
-    AQI_status.textContent = status;
-    AQI_bar.className = '';
-    AQI_bar.classList.add(`AQIBar2_${index }`);
+    AQIStatus.textContent = status;
+    AQIBar.className = '';
+    AQIBar.classList.add(`AQIBar2_${index }`);
+    AQIBarContainer.ariaValueNow=`${index}`;
 
     updateAQIDetails(air_quality)
 }
@@ -532,18 +594,34 @@ function updateAQIDetailsDotColor(item, type, value) {
     const [greenLimit, orangeLimit] = thresholds[type];
     if (value <= greenLimit) {
         item.classList.add('dot--green');
+        item.title='Healthy';
+        item.ariaLabel ='Healthy.';
     } else if (value <= orangeLimit) {
         item.classList.add('dot--orange');
+        item.title='Moderate';
+        item.ariaLabel ='Moderate.';
     } else {
         item.classList.add('dot--darkred');
+        item.title='Unhealthy';
+        item.ariaLabel ='Unhealthy.';
     }
 }
 function updateMoonSection({forecastday:[{astro:{moon_phase, moonrise, moonset}}]}){
-    const Moon_ids = ['MoonPhase', 'MoonriseTime','MoonsetTime'];
-    const Moon_vals = [moon_phase,moonrise,moonset];
-    Moon_ids.forEach((id, index) => {
-        document.getElementById(id).textContent = Moon_vals[index];
-    });
+    const MoonPhase = document.getElementById('MoonPhase');
+    if(MoonPhase) {
+        MoonPhase.textContent = moon_phase;
+    }
+    const MoonriseTime = document.getElementById('MoonriseTime');
+    if(MoonriseTime) {
+        MoonriseTime.textContent = moonrise;
+        MoonriseTime.dateTime = moonrise;
+    }
+    const MoonsetTime = document.getElementById('MoonsetTime');
+    if(MoonsetTime) {
+        MoonsetTime.textContent = moonset;
+        MoonsetTime.dateTime = moonset;
+    }
+    
     updateMoonPhaseImg(moon_phase)
 }
 function updateMoonPhaseImg(moon_phase){
@@ -566,7 +644,11 @@ function updateSunSection({forecastday:[{astro:{ sunrise, sunset}}]}){
     const Sun_ids = ['SunriseTime','SunsetTime'];
     const Sun_vals = [sunrise,sunset];
     Sun_ids.forEach((id, index) => {
-        document.getElementById(id).textContent = Sun_vals[index];
+        const element = document.getElementById(id)
+        if(!element)return;
+        element.textContent = Sun_vals[index];
+        element.dateTime = Sun_vals[index];
+
     });
 }
 
@@ -575,5 +657,3 @@ function updatePressureSection({current:{pressure_mb}}){
     const Pressure= document.getElementById(PressureID);
     Pressure.textContent = `${pressure_mb} mb`;
 }
-
-

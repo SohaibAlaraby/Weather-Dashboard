@@ -1,11 +1,14 @@
 :root {
     --page-padding:20px;
-    --input-padding:16px;
+    --border-radius:2rem;
+    --search-font-size: 1rem;
+    --search-padding:1em;
     --mainInfo-font-size:40px;
     --document-font-color:rgb(255, 255, 255);
     --WeatherAppMain-gap: 24px;
     --WeatherAppContainer-gap: 65px;
-    --WeatherCard-color:rgba(0, 0, 0, 0.247);
+    --WeatherCard-bg-color:rgba(0, 0, 0, 0.37);
+    --button-bg-color: rgb(0, 73, 175);
 
 }
 *{
@@ -85,12 +88,12 @@ body {
     /* pointer-events: none; */
 }
 .TryAgain {
-    padding:var(--input-padding) Calc(2 * var(--input-padding));
+    padding:var(--search-padding) Calc(2 * var(--search-padding));
     /* height:100%; */
     font-size: 16px;
     background-color: #3447d2;
     border:none;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     text-transform: capitalize;
     cursor:pointer;
     display: flex;
@@ -99,73 +102,82 @@ body {
 }
 .WeatherAppContainer {
     /* background-color: rgba(172, 255, 47, 0.293); */
-    padding: 0px 5%;
-    backdrop-filter: blur(2px);
+    padding: 0 5%;
+    backdrop-filter: blur(0.25rem);
     color:white;
     min-height: 100vh;
     width:100%;
-    max-width:1920px;
+    /* max-width:1920px; */
     display:flex;
     flex-direction: column;
     justify-content: center;
     /* align-items: center; */
-    gap: var(--WeatherAppContainer-gap);
+    /* gap: var(--WeatherAppContainer-gap); */
     
 }
+
 /* header */
-.WeatherAppHeader{
+.horizontal-flex-wrap{
     /* background-color: rgb(0, 87, 186); */
+    width:100%;
     display:flex;
-    justify-content: space-between;
-    align-items: center;
+    /* justify-content: space-between; */
+    /* align-items: center; */
     flex-wrap: wrap;
+    padding:3rem 0rem;
+    gap:1rem;
 }
-#City-Country-Date-Time {
+.alignCenter{
+    align-items: center;
+}
+.location-info {
     width:50%;
     flex-grow:1;
 }
-#City {
-    font-size: 60px;
+.location-info h1{
+    font-size: 3.5rem;
     text-transform: capitalize;
-    margin-bottom:0px;
+    margin:0px;
     font-weight: 800;
 
 }
-#Country {
-    font-size: 40px;
+.location-info h2{
+    font-size: 2.75rem;
     text-transform: capitalize;
     margin:0px;
     font-weight: 600;
 
 }
-#Date-Time {
-    font-size:18px;
+.location-info time{
+    font-size:1.75rem;
 }
-#Date {
+.location-info time span{
     text-transform: capitalize;
 }
-#SearchIn-SearchBtn-LocationBtn {
-    width: 50%;
-    min-width: 300px;
+#SearchContainer{
     display:flex;
+    flex-direction: column;
     flex-grow:1;
+}
+.search-form{
+    min-width: 25rem;
+    display:flex;
+    align-items: center;
+    gap:1rem;
     
 }
-.WeatherAppHeader .SearchIn-SearchBtn {
+.search-group {
     position:relative;
-    margin-right:10px;
     flex-grow:1;
     
 }
 #SearchIn {
     width:100%;
-    min-width: 320px;
-    padding:var(--input-padding);
+    padding:var(--search-padding);
     border:none;
-    border-radius: 8px;
-    /* height:100%; */
+    border-radius: var(--border-radius);
     color:black;
-    font-size: 16px;
+    font-size: var(--search-font-size);
 }
 #SearchIn::placeholder {
     color:gray;
@@ -174,56 +186,41 @@ body {
     color:transparent;
     transition: 0.3s;
 }
-#SearchBtn {
-    padding:var(--input-padding) Calc(2 * var(--input-padding));
-    /* height:100%; */
-    font-size: 16px;
-    background-color: #15249C;
+.button{
+    font-size: var(--search-font-size);
+    background-color:var(--button-bg-color); ;
     border:none;
-    border-radius: 8px;
-    position:absolute;
-    right:0;
-    top:0;
+    border-radius: var(--border-radius);
     text-transform: capitalize;
     cursor:pointer;
 }
+#SearchBtn {
+    padding:var(--search-padding) Calc(2 * var(--search-padding));
+    position:absolute;
+    right:-1px;
+    top:0;
+
+}
 #LocationBtn{     
-    height:100%;
-    align-self: stretch;
-    padding: var(--input-padding);
-    aspect-ratio: 1 / 1;
-   
-    flex-shrink: 0;     
-    font-size: 16px;
-    background-color: #15249C;
-    border: none;
-    border-radius: 8px;
     display: flex;     
     align-items: center;
     justify-content: center;
-    cursor:pointer;
+    padding:var(--search-padding) var(--search-padding);
 }
-#LocationBtn:hover, #SearchBtn:hover {
-    background-color: blue;
+.button:hover {
+    background-color: #005eff;
 }
 /* Main */
 /* main information section */
-#WeatherAppMain{
+/* 
+main{
     display:flex;
     flex-wrap: wrap;
     gap:var(--WeatherAppMain-gap);
-}
-#MainInfo {
-    width:100%;
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap:wrap;
-    margin-bottom:calc(var(--WeatherAppContainer-gap) - var(--WeatherAppMain-gap));
-}
+} */
 
 #Temp-Units-WeatherCondition{
-    width:50%;
+    /* width:50%; */
     flex-grow: 1;
     display:flex;
     align-items: center;
@@ -231,12 +228,11 @@ body {
 }
 
 #Temp{
-    font-size: 130px;
-    margin-right: 15px;
-    /* margin-block-start: 0.5em; */
-    /* margin-block-end: 0.5em; */
+    font-size: 200px;
     margin-block-start: 0px;
     margin-block-end: 0px;
+    /* margin-right: 15px; */
+    
     
 }
 #Units{
@@ -256,20 +252,27 @@ body {
     color:rgb(151, 151, 151);
 }
 #WeatherCondition {
-    font-size: var(--mainInfo-font-size);
+    font-size: 2.25rem;
     text-transform: capitalize;
+    max-width:12.5rem;
     margin: 0;
 }
 
 /* extra information section */
 #WeatherIcon-ExtraWeatherInfo {
     width:50%;
-    min-width: 374px;
+    min-width: 360px;
     flex-grow: 1;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    /* flex-wrap: wrap; */
 
     
+}
+ul,ol {
+    list-style: none;
+    padding:0;
+    margin:0;
 }
 #ExtraWeatherInfo {
    display:flex;
@@ -279,102 +282,97 @@ body {
 }
 #ExtraWeatherInfo p{
    margin: 0.25em;
-   font-size: 20px;
+   font-size: 1.5rem;
 }
 #WeatherIcon {
-    
-    width:25%;
-    min-width: 200px;
+   width:230px;
     /* to prevent vertical stretch if window ratio changes */
     align-self:center;
     flex-shrink: 0;
 }
 
-#TodayDetailedInfoContainer, #NextDaysPredictionContainer{
-    background-color: rgba(255, 255, 255, 0.123);
-    width:30%;
+.HourltyDailyForcast{
+    background-color: var(--WeatherCard-bg-color);
     min-width: 350px; 
-    display:inline;
     padding:28px 18px;
     flex-grow: 1;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
 }
 #TodayDetailedInfoContainer {
-    width: 55%;
+    width: 60%;
 }
-
-#TodayDetailedInfoContainer h3, #NextDaysPredictionContainer h3, #UVIndex h3, #HumiditySection h3, #VisibilitySection h3, #DewPointSection h3,#AQIContainer h3,#PressureSection h3{
+#NextDaysPredictionContainer{
+    width:30%;
+}
+.hight100{
+    height:100%;
+}
+.HourltyDailyForcast h3,.weather-quantity-card h3{
     text-transform: capitalize;
     font-weight: 400;
     margin-top:0;
 }
 
-#TodayDetailedInfo, #NextDaysPrediction{
+.HourlyDailyCardSlider{
     display: flex;
     overflow-x: auto;
     scroll-behavior:smooth;
-    gap:8px;
+    gap:0.5rem;
 }
 
-#TodayDetailedInfo .HourByHourInfo, #NextDaysPrediction .DayByDayInfo{
-    background-color: #0e548d;
+.HourlyDailyCard{
+    background-color: var(--button-bg-color);
     padding:16px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     display:flex;
     align-items: center;
     flex-direction: column;
     gap:8px;
+}
+#NextDaysPrediction{
+    justify-content: center;
+    width:auto;
 }
 .centerVertically{
     display:flex;
     align-items: center;
     flex-wrap:wrap;
 }
-#NextDaysPrediction{
-    justify-content: center;
-    width:auto;
-}
-#NextDaysPrediction .DayByDayInfo{
-    width:30%;
-    
-}
-#UVIndex, #HumiditySection, #VisibilitySection, #DewPointSection, #AQIContainer,#PressureSection{
-    background-color: rgba(0, 0, 0, 0.247);
+.weather-quantity-card{
+    background-color: var(--WeatherCard-bg-color);
     width:30%;
     min-width: 300px;
     padding:36px 18px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     flex-grow:1;
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
     
 }
-#UVIndex h3, #HumiditySection h3, #VisibilitySection h3,#DewPointSection h3, #AQIContainer h3,#PressureSection h3{
+.weather-quantity-card h3{
     display:flex;
     align-items: center;
     gap: 4px;
 }
-#UVIndex p, #HumiditySection p,#AQIState{
-    text-transform: capitalize;
-    font-size: 28px;
-    font-weight: 500;
-}
-#VisibilityValue, #DewPointValue, #PressureValue{
-    font-size: 56px;
+.quantity-value{
+    font-size: 3rem;
     font-weight: 500;
     margin:0;
+    position:relative;
 }
-#VisibilityDescription, #DewPointDescription, #AQIDescription {
-    font-size:28px;
-    font-weight: 500;
-    margin:0;
+.quantity-description{
     text-transform: capitalize;
+    font-size: 1.75rem;
+    font-weight: 500;
 }
-#UVBar, #HumidityBar1, #AQIBarContainer{
+.margin-0{
+    margin:0;
+}
+.quantity-meter{
     width:100%;
     height: 20px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
 }
 #UVBar {
     
@@ -386,12 +384,13 @@ body {
         #6b49c8 100%   /* Extreme */);
     position:relative;
 }
-#HumidityBar1, #AQIBarContainer {
+.bg-white {
     background-color: white;
 }
 #HumidityBar2, #AQIBarFill{
     height: 20px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
+    transition: width 4s ease-in-out;
     
 }
 #HumidityBar2{
@@ -441,33 +440,33 @@ body {
 }
 #AQIContainer details{
     
-    padding: 8px;
-    border-radius: 8px;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
     color:white;
     margin-top: 16px;
 }
 
 #AQIContainer details summary{
     cursor: pointer;
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 500;
     text-transform:capitalize;
-    margin-bottom:8px;
+    margin-bottom:0.5rem;
 }
 .aqi-grid{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
-    gap: 12px; 
-    margin-top: 10px;
+    gap: 0.75rem; 
+    margin-top: 0.75rem;
 }
 .aqi-item{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
-    font-size: 18px;
-    background-color: #0e548d;
+    font-size: 1rem;
+    background-color: var(--button-bg-color);
     padding: 8px;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     gap:8px;
 
 }
@@ -487,19 +486,28 @@ body {
 .dot--darkred{
     background-color: #7e0023;
 }
-#MoonContainer p, #SunContainer p{
-    margin:0;
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
-#MoonContainer, #SunContainer {
-    background-color: rgba(0, 0, 0, 0.247);
-    width:30%;
-    min-width: 300px;
-    max-width: calc(1920px/3);
+.position-relative{
+    position:relative;
+}
+.sun-moon-section{
+    background-color: var(--WeatherCard-bg-color);
     padding:18px;
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     flex-grow:1;
     display: inline-flex;
     justify-content: space-evenly;
+    position: relative;
 }
 #MoonVisualize, #MoonContent, #SunContent {
     display:flex;
@@ -522,7 +530,7 @@ body {
     gap:16px;
     width:20%;
 }
-#MoonContainer img, #SunContainer img{
+.sun-moon-section img{
     width:100%;
     height:auto;
     max-width:260px;
@@ -531,7 +539,55 @@ body {
     font-size: 1em;
     font-weight: 400;
 }
-.MoonTime, .SunTime {
-    font-size: 1.25em;
+.time{
+    font-size: 1.5rem;
     font-weight: 500px;
+}
+@media (max-width:640px) {
+    .WeatherAppContainer {
+        padding: 0 2%;
+    }
+    .horizontal-flex-wrap{
+        padding:2rem 0rem;
+        gap:1rem;
+    }
+    .location-info h1{
+        font-size: 3rem;
+    }
+    .location-info h2{
+        font-size: 2.25rem;
+    }
+    .location-info time{
+        font-size:1.25rem;
+    }
+    .search-form{
+        min-width: 19rem;
+    }
+     #Temp{
+        font-size: 125px;
+    }
+     #Units, #CelciusBtn, #FahrenheitBtn {
+        font-size: 2rem;
+    }
+     #WeatherCondition {
+        font-size: 1.5rem;
+    }
+    #ExtraWeatherInfo p, #ExtraWeatherInfo p span{
+        font-size: 1.25rem;
+    }
+    #WeatherIcon{
+        width:170px;
+    }
+    .quantity-value{
+        font-size: 2.25rem;
+    }
+    .quantity-description{
+        font-size: 1.25rem;
+    }
+    .HourltyDailyForcast h3,.weather-quantity-card h3{
+        font-size: 1rem;
+    }
+    .time{
+        font-size: 1.25rem;
+    }
 }
