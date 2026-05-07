@@ -638,7 +638,7 @@ function updateMoonPhaseImg(moon_phase){
 
     const MoonImage =  document.getElementById('MoonImage');
     MoonImage.src = `Icons/${Phases[moon_phase]}`;
-    MoonImage.alt = moon_phase;
+    MoonImage.alt = `Current moon phase:${moon_phase}.`;
 }
 function updateSunSection({forecastday:[{astro:{ sunrise, sunset}}]}){
     const Sun_ids = ['SunriseTime','SunsetTime'];
