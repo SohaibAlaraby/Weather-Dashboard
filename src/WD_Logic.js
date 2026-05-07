@@ -6,7 +6,6 @@ const SearchBtn = document.getElementById("SearchBtn");
 const CelBtn = document.getElementById('CelciusBtn');
 const FahBtn = document.getElementById('FahrenheitBtn');
 const SearchBarContainer = document.getElementById("SearchIn-SearchBtn");
-
 const baseURL = "https://api.weatherapi.com/v1/forecast.json?"
 let WeatherData;
 let searchController;
@@ -19,7 +18,6 @@ class WeatherError extends Error {
 const TryAgainbtn = document.getElementById('TryAgain');
 window.addEventListener('load', loadInitialData);
 TryAgainbtn.addEventListener('click',loadInitialData);
-
 SearchBtn.addEventListener("click",searchBtnPressed);
 CelBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,true,'CelciusBtn','FahrenheitBtn'); });
 FahBtn.addEventListener("click",(event)=>{ changeTempUnit(WeatherData,false,'CelciusBtn','FahrenheitBtn'); });
@@ -31,8 +29,6 @@ function ChangeArialPressed(celBtnID,fahBtnID,isCel){
     if(!celBtn || !fahBtn) return;
     celBtn.ariaPressed = `${isCel}`;
     fahBtn.ariaPressed = `${!isCel}`;
-
-
 }
 function changeTempUnit(data,isCel,celBtnID,fahBtnID) {
     ChangeArialPressed(celBtnID,fahBtnID,isCel)
@@ -636,5 +632,3 @@ function updatePressureSection({current:{pressure_mb}}){
     const Pressure= document.getElementById(PressureID);
     Pressure.textContent = `${pressure_mb} mb`;
 }
-
-
