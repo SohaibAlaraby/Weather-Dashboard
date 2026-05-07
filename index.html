@@ -101,7 +101,7 @@
 
             <section id="HourlyDailyInfoContainer" class="horizontal-flex-wrap position-relative">
                 <h2 id="HourlyDailyInfoHeading" class="sr-only">Today's Detailed Info and 3-Day Forecast</h2>
-                <section id="TodayDetailedInfoContainer" class="HourltyDailyForcast" aria-labelledby="hourly-heading">
+                <section id="TodayDetailedInfoContainer" class="HourltyDailyForcast" aria-labelledby="HourlyDailyInfoHeading">
                     <header>
                         <h3>Today</h3>
                     </header>
@@ -115,124 +115,199 @@
                 </section>
             </section>
             <section class="horizontal-flex-wrap">
-                <section id="AQIContainer">
+                <section id="AQIContainer" class="weather-quantity-card">
                     <header>
                         <h3>
-                            <span class="material-symbols-outlined">airwave</span>
-                            AQI
+                            <span class="material-symbols-outlined" aria-hidden="true">airwave</span>
+                            Air Quality Index
                         </h3>
                     </header>
-                    <div id = "AQIContent">
-                        <p id="AQIState"></p>
-                        <div id="AQIBarContainer">
+                    <div id = "AQIContent" aria-live="polite">
+                        <p id="AQIState" class="quantity-description"></p>
+                        <div 
+                        id="AQIBarContainer"
+                        class="quantity-meter bg-white"
+                        role="meter" 
+                        aria-label="Air Quality Index"
+                        aria-valuemin="0" 
+                        aria-valuemax="6" 
+                        aria-valuenow="0"
+                        aria-label="Air Quality Level">
                             <div id="AQIBarFill"></div>
                         </div>
                         <details>
                             <summary>
-                                <span>details</span>
+                                <span>View pollutant details</span>
                             </summary>
                             <div class="aqi-grid">  
                                     <div class="aqi-item" id="PM10">
-                                        <span>PM10:</span>
+                                        <span title="Particulate Matter 10um" aria-label="Particulate Matter 10 micrometers or less">
+                                            PM<sub>10</sub>:
+                                        </span>
                                         <span class="aqi-value">12.5</span>
-                                        <span class="dot dot--green"></span> 
+                                        <span 
+                                        class="dot dot--green" 
+                                        ria-hidden="true" 
+                                        title="healthy" 
+                                        aria-label="Air quality status: healthy" 
+                                        role="status"></span> 
                                     </div>
                                     <div class="aqi-item" id="PM25">
-                                        <span>PM2.5:</span>
+                                        <span title="Particulate Matter 2.5um" aria-label="Particulate Matter 2.5 micrometers or less">
+                                            PM<sub>2.5</sub>:
+                                        </span>
                                         <span class="aqi-value">12.5</span>
-                                        <span class="dot dot--green"></span> 
+                                        <span class="dot dot--green" aria-hidden="true" title="healthy" aria-label="Air quality status: healthy" role="status"></span> 
                                     </div>
 
                                     <div class="aqi-item" id="CO">
-                                        <span>CO:</span>
+                                        <span title="Carbon Monoxide" aria-label="Carbon Monoxide">
+                                            CO:
+                                        </span>
                                         <span class="aqi-value">12.5</span>
-                                        <span class="dot dot--green"></span>
+                                        <span class="dot dot--green" 
+                                        aria-hidden="true" 
+                                        title="healthy" 
+                                        aria-label="Air quality status: healthy" 
+                                        role="status"></span>
                                     </div>
                                     <div class="aqi-item" id="SO2">
-                                        <span>SO<sub>2</sub>:</span>
+                                        <span title="Sulfur Dioxide" aria-label="Sulfur Dioxide">
+                                            SO<sub>2</sub>:
+                                        </span>
                                         <span class="aqi-value">12.5</span>
-                                        <span class="dot dot--green"></span>
+                                        <span class="dot dot--green" aria-hidden="true" title="healthy" 
+                                        aria-label="Air quality status: healthy" 
+                                        role="status"></span>
                                     </div>
                                     <div class="aqi-item" id="NO2">
-                                        <span>NO<sub>2</sub>:</span>
+                                        <span title="Nitrogen Dioxide" aria-label="Nitrogen Dioxide">
+                                            NO<sub>2</sub>:
+                                        </span>
                                         <span class="aqi-value">12.5</span>
-                                        <span class="dot dot--green"></span>
+                                        <span 
+                                        class="dot dot--green" 
+                                        aria-hidden="true" 
+                                        title="healthy" 
+                                        aria-label="Air quality status: healthy" 
+                                        role="status"></span>
                                     </div>
                                     
                                     <div class="aqi-item" id="O3">
-                                        <span>O<sub>3</sub>:</span>
+                                        <span title="Ozone" aria-label="Ozone">
+                                            O<sub>3</sub>:
+                                        </span>
                                         <span class="aqi-value">12.5</span>
-                                        <span class="dot dot--orange"></span>
+                                        <span 
+                                        class="dot dot--orange" 
+                                        aria-hidden="true" 
+                                        title="moderate" 
+                                        aria-label="Air quality status: moderate" 
+                                        role="status"></span>
                                     </div>
                                 </div>
                         </details>
                     </div>
                 </section>
                 
-                <section id="UVIndex">
-                    <h3><span class="material-symbols-outlined">wb_sunny</span>UV index</h3>
+                <section id="UVIndex" class="weather-quantity-card">
+                    <header>
+                        <h3>
+                            <span class="material-symbols-outlined" aria-hidden="true">wb_sunny</span>UV index
+                        </h3>
+                    </header>
                     <div>
-                        <p id="UVIndexDescribtion">low</p>
-                        <div id="UVBar">
+                        <p id="UVIndexDescription" class="quantity-description">low</p>
+                        <div id="UVBar"  class="quantity-meter" role="meter" aria-valuemin="0" aria-valuemax="11+" aria-valuenow="0" aria-label="UV index level">
                             <div id="UVPointer">0</div>
                         </div>
                     </div>
                 </section>
-                <section id="HumiditySection">
-                    <h3><span class="material-symbols-outlined">humidity_high</span>Humidity</h3>
+                <section id="HumiditySection" class="weather-quantity-card">
+                    <header>
+                        <h3>
+                            <span class="material-symbols-outlined" aria-hidden="true">humidity_high</span>Humidity
+                        </h3>
+                    </header>
                     <div>
-                        <p id="HumidityDescription"></p>
-                        <div id="HumidityBar1">
+                        <p id="HumidityDescription" class="quantity-description"></p>
+                        <div id="HumidityBar1" class="quantity-meter bg-white" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Humidity level">
                             <div id="HumidityBar2"></div>
                         </div>
                     </div>
                 </section>
-                <section id="VisibilitySection">
-                    <h3><span class="material-symbols-outlined">visibility</span>Visibility</h3>
-                    <p id="VisibilityDescription"></p>
-                    <p id="VisibilityValue"></p>
+                <section id="VisibilitySection" class="weather-quantity-card" aria-labelledby="vis-heading">
+                    <header>
+                        <h3 id="vis-heading">
+                            <span class="material-symbols-outlined" aria-hidden="true">visibility</span>Visibility
+                        </h3>
+                    </header>
+                    <div aria-live="polite">
+                        <p id="VisibilityDescription" class="quantity-description margin-0"></p>
+                        <p id="VisibilityValue" class="quantity-value">Loading visibility data...</p>
+                    </div>
                 </section>
-                <section id="DewPointSection">
-                    <h3><span class="material-symbols-outlined">dew_point</span>Dew Point</h3>
-                    <p id="DewPointDescription"></p>
-                    <p id="DewPointValue"></p>
+                <section id="DewPointSection" class="weather-quantity-card" aria-labelledby="dew-heading">
+                    <header>
+                        <h3 id="dew-heading">
+                            <span class="material-symbols-outlined" aria-hidden="true">dew_point</span>Dew Point
+                        </h3>
+                    </header>
+                    <div aria-live="polite">
+                        <p id="DewPointDescription" class="quantity-description margin-0">The dew point is currently unknown.</p>
+                        <p id="DewPointValue" class="quantity-value">Loading dew point data...</p>
+                    </div>
                 </section>
-                <section id="PressureSection">
-                    <h3><span class="material-symbols-outlined">compress</span>Pressure</h3>
-                    <p id="PressureValue"></p>
+                <section id="PressureSection" class="weather-quantity-card" aria-labelledby="pressure-heading">
+                    <header>
+                        <h3 id="pressure-heading">
+                            <span class="material-symbols-outlined" aria-hidden="true">compress</span>Pressure
+                        </h3>
+                    </header>
+                    <p id="PressureValue" class="quantity-value" aria-live="polite">Loading pressure data...</p>
                 </section>
             </section>
             <section class="horizontal-flex-wrap">
-                <section id="MoonContainer">
-                    <div id="MoonContent">
+                <section id="MoonContainer" class="sun-moon-section" aria-labelledby="moon-heading">
+                    <h3 id="moon-heading" class="sr-only">Moonrise, Moonset and Phases</h3>
+                    <dl id="MoonContent">
                         <div>
-                            <p class="subtitle">Moonrise</p>
-                            <p id="MoonriseTime" class="MoonTime">4:00 PM</p>
+                            <dt class="subtitle margin-0">Moonrise</dt>
+                            <dd class="time margin-0">
+                                <time id="MoonriseTime" class="time margin-0" datetime="16:00">4:00 PM</time>
+                            </dd>
                         </div>
                         <div>
-                            <p class="subtitle">Moonset</p>
-                            <p id="MoonsetTime" class="MoonTime">4:00 PM</p>
+                            <dt class="subtitle margin-0">Moonset</dt>
+                            <dd class="time margin-0">
+                                <time id="MoonsetTime" class="time margin-0" datetime="16:00">4:00 PM</time>
+                            </dd>
                         </div>
-                    </div>
-                    <div id="MoonVisualize">
-                        <img id = "MoonImage" src="/Icons/NewMoon.png" alt="">
-                        <p id="MoonPhase" class="MoonTime">New Moon</p>
+                    </dl>
+                    <div id="MoonVisualize" aria-live="polite">
+                        <img id = "MoonImage" src="/Icons/NewMoon.png" alt="Current Moon Phase:">
+                        <p id="MoonPhase" class="time" aria-hidden="true">New Moon</p>
                     </div>
                 </section>
 
-                <section id="SunContainer">
-                    <div id="SunContent">
+                <section id="SunContainer" class="sun-moon-section" aria-labelledby="sun-heading">
+                    <h3 id="sun-heading" class="sr-only">Sunrise and Sunset</h3>
+                    <dl id="SunContent">
                         <div>
-                            <p class="subtitle">Sunrise</p>
-                            <p id="SunriseTime" class="SunTime">6:00 AM</p>
+                            <dt class="subtitle margin-0">Sunrise</dt>
+                            <dd class="time margin-0">
+                                <time id="SunriseTime" class="time margin-0" datetime="06:00">6:00 AM</time>
+                            </dd>
                         </div>
                         <div>
-                            <p class="subtitle">Sunset</p>
-                            <p id="SunsetTime" class="SunTime">6:00 PM</p>
+                            <dt class="subtitle margin-0">Sunset</dt>
+                            <dd class="time margin-0">
+                                <time id="SunsetTime" class="time margin-0" datetime="18:00">6:00 PM</time>
+                            </dd>
                         </div>
-                    </div>
+                    </dl>
                     <div id="SunVisualize">
-                        <img id = "SunImage" src="/Icons/Sun.png" alt="Sun Icon">
+                        <img id = "SunImage" src="/Icons/Sun.png" alt="" aria-hidden="true">
                     </div>
                 </section>
             </section>    

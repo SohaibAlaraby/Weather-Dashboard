@@ -455,9 +455,12 @@ function createDaysBar({forecastday}, isCel) {
 
 function updateUVIndex({current:{uv:UVIndex}}){
 
-    const UVdescription = document.getElementById("UVIndexDescribtion");
+    const UVdescription = document.getElementById("UVIndexDescription");
     const UVPointer = document.getElementById("UVPointer");
-    UVPointer.textContent = UVIndex.toFixed(1);
+    const UVBar = document.getElementById("UVBar");
+    const UVIndexValue = UVIndex.toFixed(1);
+    UVBar.ariaValueNow=`${UVIndexValue}`
+    UVPointer.textContent = UVIndexValue;
     let percentage = (UVIndex/11)*100;
     percentage = percentage>100? 100 : percentage;   
     UVPointer.style.left = `${percentage}%`;
@@ -544,12 +547,14 @@ function updateAQISection({current:{air_quality}}){
     const {status} = getAQIState(air_quality["us-epa-index"]);
     const {'us-epa-index':index} = air_quality;
 
-    const AQI_status = document.getElementById('AQIState'); 
-    const AQI_bar = document.getElementById('AQIBarFill');
+    const AQIStatus = document.getElementById('AQIState'); 
+    const AQIBarContainer = document.getElementById('AQIBarContainer');
+    const AQIBar = document.getElementById('AQIBarFill');
 
-    AQI_status.textContent = status;
-    AQI_bar.className = '';
-    AQI_bar.classList.add(`AQIBar2_${index }`);
+    AQIStatus.textContent = status;
+    AQIBar.className = '';
+    AQIBar.classList.add(`AQIBar2_${index }`);
+    AQIBarContainer.ariaValueNow=`${index}`;
 
     updateAQIDetails(air_quality)
 }
@@ -589,18 +594,34 @@ function updateAQIDetailsDotColor(item, type, value) {
     const [greenLimit, orangeLimit] = thresholds[type];
     if (value <= greenLimit) {
         item.classList.add('dot--green');
+        item.title='Healthy';
+        item.ariaLabel ='Healthy.';
     } else if (value <= orangeLimit) {
         item.classList.add('dot--orange');
+        item.title='Moderate';
+        item.ariaLabel ='Moderate.';
     } else {
         item.classList.add('dot--darkred');
+        item.title='Unhealthy';
+        item.ariaLabel ='Unhealthy.';
     }
 }
 function updateMoonSection({forecastday:[{astro:{moon_phase, moonrise, moonset}}]}){
-    const Moon_ids = ['MoonPhase', 'MoonriseTime','MoonsetTime'];
-    const Moon_vals = [moon_phase,moonrise,moonset];
-    Moon_ids.forEach((id, index) => {
-        document.getElementById(id).textContent = Moon_vals[index];
-    });
+    const MoonPhase = document.getElementById('MoonPhase');
+    if(MoonPhase) {
+        MoonPhase.textContent = moon_phase;
+    }
+    const MoonriseTime = document.getElementById('MoonriseTime');
+    if(MoonriseTime) {
+        MoonriseTime.textContent = moonrise;
+        MoonriseTime.dateTime = moonrise;
+    }
+    const MoonsetTime = document.getElementById('MoonsetTime');
+    if(MoonsetTime) {
+        MoonsetTime.textContent = moonset;
+        MoonsetTime.dateTime = moonset;
+    }
+    
     updateMoonPhaseImg(moon_phase)
 }
 function updateMoonPhaseImg(moon_phase){
@@ -623,7 +644,11 @@ function updateSunSection({forecastday:[{astro:{ sunrise, sunset}}]}){
     const Sun_ids = ['SunriseTime','SunsetTime'];
     const Sun_vals = [sunrise,sunset];
     Sun_ids.forEach((id, index) => {
-        document.getElementById(id).textContent = Sun_vals[index];
+        const element = document.getElementById(id)
+        if(!element)return;
+        element.textContent = Sun_vals[index];
+        element.dateTime = Sun_vals[index];
+
     });
 }
 
