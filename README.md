@@ -174,12 +174,6 @@ Modern browsers that support ES modules, `fetch`, `AbortController`, and CSS `ba
 
 ---
 
-## License
-
-This project is part of a personal portfolio. Add a license file here if you plan to open-source it formally.
-
----
-
 ## Acknowledgments
 
 - [WeatherAPI.com](https://www.weatherapi.com/) for weather and air-quality data
